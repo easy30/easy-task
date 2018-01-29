@@ -1,0 +1,199 @@
+2018-01-29 16:07:59,761 INFO PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization [PostProcessorRegistrationDelegate.java:327] Bean 'taskSchedulerService' of type [com.cehome.task.client.TimeTaskSchedulerService] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-01-29 16:07:59,813 INFO PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization [PostProcessorRegistrationDelegate.java:327] Bean 'clientServiceController' of type [com.cehome.task.client.ClientServiceController] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-01-29 16:07:59,814 INFO TimeTaskClient.setApplicationContext [TimeTaskClient.java:118] init machineHeartBeatService 
+2018-01-29 16:07:59,821 INFO MachineHeartBeatService.afterPropertiesSet [MachineHeartBeatService.java:61] 第一次执行，加入启动map中. host=EZ-20170511VJSS
+2018-01-29 16:07:59,821 INFO MachineHeartBeatService.afterPropertiesSet [MachineHeartBeatService.java:61] 第一次执行，加入启动map中. host=EZ-20170511VJSS
+2018-01-29 16:07:59,879 INFO PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization [PostProcessorRegistrationDelegate.java:327] Bean 'machineHeartBeatService' of type [com.cehome.task.client.MachineHeartBeatService] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-01-29 16:08:00,708 INFO TomcatEmbeddedServletContainer.initialize [TomcatEmbeddedServletContainer.java:89] Tomcat initialized with port(s): 10001 (http)
+2018-01-29 16:08:00,733 INFO StandardService.log [DirectJDKLog.java:179] Starting service [Tomcat]
+2018-01-29 16:08:00,735 INFO StandardEngine.log [DirectJDKLog.java:179] Starting Servlet Engine: Apache Tomcat/8.5.23
+2018-01-29 16:08:00,942 INFO [/emon].log [DirectJDKLog.java:179] Initializing Spring embedded WebApplicationContext
+2018-01-29 16:08:00,943 INFO ContextLoader.prepareEmbeddedWebApplicationContext [EmbeddedWebApplicationContext.java:276] Root WebApplicationContext: initialization completed in 3918 ms
+2018-01-29 16:08:01,276 INFO ServletRegistrationBean.onStartup [ServletRegistrationBean.java:190] Mapping servlet: 'dispatcherServlet' to [/]
+2018-01-29 16:08:01,284 INFO FilterRegistrationBean.configure [AbstractFilterRegistrationBean.java:258] Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-01-29 16:08:01,285 INFO FilterRegistrationBean.configure [AbstractFilterRegistrationBean.java:258] Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-01-29 16:08:01,286 INFO FilterRegistrationBean.configure [AbstractFilterRegistrationBean.java:258] Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-01-29 16:08:01,286 INFO FilterRegistrationBean.configure [AbstractFilterRegistrationBean.java:258] Mapping filter: 'requestContextFilter' to: [/*]
+2018-01-29 16:08:01,895 INFO RequestMappingHandlerAdapter.initControllerAdviceCache [RequestMappingHandlerAdapter.java:534] Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@4ae3c1cd: startup date [Mon Jan 29 16:07:57 CST 2018]; root of context hierarchy
+2018-01-29 16:08:02,042 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/]}" onto public void com.cehome.task.console.Application.index(javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2018-01-29 16:08:02,070 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/index.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.index(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,072 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/delete.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.delete(java.lang.String[],javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,073 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/list.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.list(com.cehome.task.domain.TimeTaskSearch,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,074 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/save.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.save(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,076 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/test.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.test() throws java.lang.Exception
+2018-01-29 16:08:02,077 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/status.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.status(long[],int,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,079 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/getLog.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.getLog(long,long,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,080 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/edit.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.edit(int,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,081 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/getIpList.htm]}" onto public java.lang.String com.cehome.task.console.controller.TimeTaskController.getIpList(java.lang.String) throws java.lang.Exception
+2018-01-29 16:08:02,082 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/rank.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.rank(java.lang.String[],int,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,083 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/switchIp.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.switchIp(long[],java.lang.String,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,097 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/exportTasks.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.exportTasks(long[],javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,098 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/importTasks.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.importTasks(org.springframework.web.multipart.MultipartFile,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,100 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTask/removeAppName.htm]}" onto public void com.cehome.task.console.controller.TimeTaskController.removeAppName(java.lang.String,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.ui.Model) throws java.lang.Exception
+2018-01-29 16:08:02,109 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-01-29 16:08:02,111 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-01-29 16:08:02,153 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTaskClientService/status.htm],produces=[text/html;charset=UTF-8]}" onto public java.lang.String com.cehome.task.client.ClientServiceController.status(java.lang.String)
+2018-01-29 16:08:02,154 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTaskClientService/getLog.htm],produces=[text/html;charset=UTF-8]}" onto public java.lang.String com.cehome.task.client.ClientServiceController.getLog(java.lang.String,long,long)
+2018-01-29 16:08:02,155 INFO RequestMappingHandlerMapping.register [AbstractHandlerMethodMapping.java:543] Mapped "{[/timeTaskClientService/getLogSize.htm],produces=[text/html;charset=UTF-8]}" onto public java.lang.String com.cehome.task.client.ClientServiceController.getLogSize(java.lang.String)
+2018-01-29 16:08:02,227 INFO SimpleUrlHandlerMapping.registerHandler [AbstractUrlHandlerMapping.java:362] Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-01-29 16:08:02,228 INFO SimpleUrlHandlerMapping.registerHandler [AbstractUrlHandlerMapping.java:362] Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-01-29 16:08:02,326 INFO SimpleUrlHandlerMapping.registerHandler [AbstractUrlHandlerMapping.java:362] Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-01-29 16:08:02,862 INFO FreeMarkerConfigurer.postProcessTemplateLoaders [FreeMarkerConfigurer.java:127] ClassTemplateLoader for Spring macros added to FreeMarker configuration
+2018-01-29 16:08:03,112 INFO AnnotationMBeanExporter.afterSingletonsInstantiated [MBeanExporter.java:431] Registering beans for JMX exposure on startup
+2018-01-29 16:08:03,174 INFO Http11NioProtocol.log [DirectJDKLog.java:179] Initializing ProtocolHandler ["http-nio-10001"]
+2018-01-29 16:08:03,199 INFO Http11NioProtocol.log [DirectJDKLog.java:179] Starting ProtocolHandler ["http-nio-10001"]
+2018-01-29 16:08:03,322 INFO NioSelectorPool.log [DirectJDKLog.java:179] Using a shared selector for servlet write/read
+2018-01-29 16:08:03,426 INFO TomcatEmbeddedServletContainer.start [TomcatEmbeddedServletContainer.java:201] Tomcat started on port(s): 10001 (http)
+2018-01-29 16:08:03,437 INFO Application.logStarted [StartupInfoLogger.java:57] Started Application in 7.236 seconds (JVM running for 8.396)
+2018-01-29 16:08:08,788 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 0 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:08,788 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 0 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:08,789 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 1 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:08,789 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 1 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:08,789 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 2 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:08,789 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 2 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:08:12,671 INFO Cookie.log [DirectJDKLog.java:179] A cookie header was received [1499829238; Idea-bfeafde0=8b35f0b1-fdf3-46a2-87db-386919cde2a8; Hm_lvt_680ae85977890a79162ef4590cdf2f2d=1505186549; Hm_lvt_fb9cd9dcdda23cee0c7357db9be24acb=1511940585; wdcid=1a5f6dda7bfff230; _trs_uv=jakqhgmr_530_14lv; bdshare_firstime=1512031749686; wdlast=1512032211; JSESSIONID=B12F95AA456E9154426003FA7C1EA141] that contained an invalid cookie. That cookie will be ignored.Note: further occurrences of this error will be logged at DEBUG level.
+2018-01-29 16:08:12,688 INFO [/emon].log [DirectJDKLog.java:179] Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-01-29 16:08:12,688 INFO DispatcherServlet.initServletBean [FrameworkServlet.java:489] FrameworkServlet 'dispatcherServlet': initialization started
+2018-01-29 16:08:12,711 INFO DispatcherServlet.initServletBean [FrameworkServlet.java:508] FrameworkServlet 'dispatcherServlet': initialization completed in 23 ms
+2018-01-29 16:08:19,880 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:08:19,880 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:08:19,881 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:08:19,881 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:08:29,681 INFO MachineSwitchService.schedule [MachineSwitchService.java:76] 
+
+
+2018-01-29 16:08:29,681 INFO MachineSwitchService.schedule [MachineSwitchService.java:78] 处理机器列表前尝试进行加锁
+2018-01-29 16:08:29,691 INFO MachineSwitchService.schedule [MachineSwitchService.java:81] 加锁成功，准备获取机器列表
+2018-01-29 16:08:29,698 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用task-console-app
+2018-01-29 16:08:29,707 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=1,["EZ-20170511VJSS"]...
+2018-01-29 16:08:29,707 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=0,[]
+2018-01-29 16:08:29,707 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=1
+2018-01-29 16:08:29,707 INFO MachineSwitchService.recoverIP [MachineSwitchService.java:200] 准备恢复机器EZ-20170511VJSS
+2018-01-29 16:08:29,715 INFO MachineSwitchService.recoverIP [MachineSwitchService.java:203] 需要恢复的任务数0
+2018-01-29 16:08:29,721 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用emon-server
+2018-01-29 16:08:29,726 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=0,[]...
+2018-01-29 16:08:29,727 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=1,["EZ-20170511VJSS"]
+2018-01-29 16:08:29,727 ERROR MachineSwitchService.doWithApp [MachineSwitchService.java:127] no online machines !!!
+2018-01-29 16:08:29,727 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:08:40,051 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:08:40,051 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:08:40,051 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:08:40,051 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:08:59,736 INFO MachineSwitchService.schedule [MachineSwitchService.java:76] 
+
+
+2018-01-29 16:08:59,736 INFO MachineSwitchService.schedule [MachineSwitchService.java:78] 处理机器列表前尝试进行加锁
+2018-01-29 16:08:59,752 INFO MachineSwitchService.schedule [MachineSwitchService.java:81] 加锁成功，准备获取机器列表
+2018-01-29 16:08:59,757 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用task-console-app
+2018-01-29 16:08:59,766 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=1,["EZ-20170511VJSS"]...
+2018-01-29 16:08:59,767 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=0,[]
+2018-01-29 16:08:59,767 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:08:59,767 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用emon-server
+2018-01-29 16:08:59,777 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=0,[]...
+2018-01-29 16:08:59,778 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=1,["EZ-20170511VJSS"]
+2018-01-29 16:08:59,778 ERROR MachineSwitchService.doWithApp [MachineSwitchService.java:127] no online machines !!!
+2018-01-29 16:08:59,778 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:09:00,065 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:00,065 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:00,065 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:00,065 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:20,076 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:20,076 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:20,076 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:20,076 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:29,786 INFO MachineSwitchService.schedule [MachineSwitchService.java:76] 
+
+
+2018-01-29 16:09:29,786 INFO MachineSwitchService.schedule [MachineSwitchService.java:78] 处理机器列表前尝试进行加锁
+2018-01-29 16:09:29,883 INFO MachineSwitchService.schedule [MachineSwitchService.java:81] 加锁成功，准备获取机器列表
+2018-01-29 16:09:29,890 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用task-console-app
+2018-01-29 16:09:29,902 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=1,["EZ-20170511VJSS"]...
+2018-01-29 16:09:29,903 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=0,[]
+2018-01-29 16:09:29,903 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:09:29,903 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用emon-server
+2018-01-29 16:09:29,908 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=0,[]...
+2018-01-29 16:09:29,909 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=1,["EZ-20170511VJSS"]
+2018-01-29 16:09:29,909 ERROR MachineSwitchService.doWithApp [MachineSwitchService.java:127] no online machines !!!
+2018-01-29 16:09:29,909 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:09:40,107 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:40,107 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:09:40,107 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:40,107 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:09:59,914 INFO MachineSwitchService.schedule [MachineSwitchService.java:76] 
+
+
+2018-01-29 16:09:59,914 INFO MachineSwitchService.schedule [MachineSwitchService.java:78] 处理机器列表前尝试进行加锁
+2018-01-29 16:09:59,932 INFO MachineSwitchService.schedule [MachineSwitchService.java:81] 加锁成功，准备获取机器列表
+2018-01-29 16:09:59,938 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用task-console-app
+2018-01-29 16:09:59,959 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=1,["EZ-20170511VJSS"]...
+2018-01-29 16:09:59,960 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=0,[]
+2018-01-29 16:09:59,960 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:09:59,960 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用emon-server
+2018-01-29 16:09:59,965 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=0,[]...
+2018-01-29 16:09:59,965 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=1,["EZ-20170511VJSS"]
+2018-01-29 16:09:59,965 ERROR MachineSwitchService.doWithApp [MachineSwitchService.java:127] no online machines !!!
+2018-01-29 16:09:59,966 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:10:00,118 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:00,118 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:00,118 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:10:00,118 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:10:10,899 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 0 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:10,899 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 0 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:10,900 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 1 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:10,900 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 1 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:10,900 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 2 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:10,900 INFO TimeTaskSchedulerService.load [TimeTaskSchedulerService.java:258] 2 - find timetasks. app_name=task-console-app, size=0,active tasks=0
+2018-01-29 16:10:20,131 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:20,131 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:20,131 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:10:20,131 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:10:29,974 INFO MachineSwitchService.schedule [MachineSwitchService.java:76] 
+
+
+2018-01-29 16:10:29,974 INFO MachineSwitchService.schedule [MachineSwitchService.java:78] 处理机器列表前尝试进行加锁
+2018-01-29 16:10:29,988 INFO MachineSwitchService.schedule [MachineSwitchService.java:81] 加锁成功，准备获取机器列表
+2018-01-29 16:10:30,006 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用task-console-app
+2018-01-29 16:10:30,019 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=1,["EZ-20170511VJSS"]...
+2018-01-29 16:10:30,019 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=0,[]
+2018-01-29 16:10:30,019 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:10:30,020 INFO MachineSwitchService.schedule [MachineSwitchService.java:85] 处理应用emon-server
+2018-01-29 16:10:30,033 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:122] 在线机器数 online size=0,[]...
+2018-01-29 16:10:30,033 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:124] 离线转移处理。离线机器数 moveip size=1,["EZ-20170511VJSS"]
+2018-01-29 16:10:30,033 ERROR MachineSwitchService.doWithApp [MachineSwitchService.java:127] no online machines !!!
+2018-01-29 16:10:30,033 INFO MachineSwitchService.doWithApp [MachineSwitchService.java:137] 还原刚上线的机器. rebackip size=0
+2018-01-29 16:10:40,191 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:40,191 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:84] 
+
+
+2018-01-29 16:10:40,191 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表
+2018-01-29 16:10:40,191 INFO MachineHeartBeatService.schedule [MachineHeartBeatService.java:85] 发送心跳，更新在线机器列表

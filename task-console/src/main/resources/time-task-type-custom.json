@@ -1,0 +1,18 @@
+{
+
+  "0":{
+    "desc":"定时任务",
+    "categoryNames":["分组"]
+  },
+  "1":{
+    "desc":"监控配置",
+    "categoryNames":["分组"],
+    "bean":{
+      "fixed":"1",
+      "bean":"timeTaskPluginService",
+      "method":"run",
+      "args":{},
+      "stopMethod":"beforeStop"
+    }
+  }
+}

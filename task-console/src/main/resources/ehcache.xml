@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"  
+ updateCheck="false">  
+ <diskStore path="user.home" />  
+ <defaultCache eternal="false"   
+   maxElementsInMemory="1000"  
+   overflowToDisk="false"   
+   diskPersistent="false"   
+   timeToIdleSeconds="0"  
+   timeToLiveSeconds="600"   
+   memoryStoreEvictionPolicy="LRU" />  
+  
+ <cache name="logEventFlowLimitCache"
+   eternal="true"
+   maxElementsInMemory="1000"
+   overflowToDisk="false"  
+   diskPersistent="false"   
+   timeToIdleSeconds="0"  
+   timeToLiveSeconds="0"
+   memoryStoreEvictionPolicy="LRU" />   
+  
+ <cache name="cache5m"
+   eternal="false"  
+   maxElementsInMemory="20000"  
+   overflowToDisk="false"  
+   diskPersistent="false"   
+   timeToIdleSeconds="0"  
+   timeToLiveSeconds="300"  
+   memoryStoreEvictionPolicy="LRU" />
+
+
+
+</ehcache>  

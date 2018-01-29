@@ -1,0 +1,52 @@
+<configuration>
+
+    <appender name="file1"
+              class="com.cehome.task.client.ShardDailyFileAppender">
+
+
+            <fileNamePattern>/data/logs/emon-server-log/{shard}-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <pattern>%date %level %logger.%class{0}#%method [%file:%line] %msg%n</pattern>
+
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+        <pattern>[%level] %file:%line -- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>shard</key>
+            <defaultValue>logback</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="file"
+                      class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+                <prudent>true</prudent>
+                <rollingPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <fileNamePattern>/data/logs/emon-server-log/${shard}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                    <maxFileSize>1MB</maxFileSize>
+                    <maxHistory>10</maxHistory>
+                    <totalSizeCap>10MB</totalSizeCap>
+
+                </rollingPolicy>
+
+                <encoder>
+                    <pattern>%date %level %logger.%class{0}#%method [%file:%line] %msg%n</pattern>
+                </encoder>
+            </appender>
+
+        </sift>
+    </appender>
+
+
+    <root level="info">
+        <appender-ref ref="file" />
+    </root>
+
+
+</configuration>

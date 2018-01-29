@@ -1,0 +1,144 @@
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix :before,
+.clearfix :after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/*头部*/
+header {
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #333;
+    vertical-align: bottom;
+}
+
+header h1 {
+    width: 40%;
+    float: left;
+    font-size: 24px;
+    color: #fff;
+    line-height: 24px;
+}
+
+#head-user {
+    width: 50%;
+    float: right;
+    margin-top: 14px;
+    display: inline;
+    text-align: right;
+    color: #bcbdbf;
+    font-size: 14px;
+}
+
+#head-user-name {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#head-user-line {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/*分页跳转*/
+#paginationGoIpt {
+    width: 75px;
+    height: 34px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+#paginationGoBtn {
+    color: #2a6496;
+    background-color: #FFFFFF;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+}
+
+#paginationGoBtn:hover {
+    background-color: #eee;
+}
+
+/*列表工具栏*/
+.table-util {
+    background-color: #CDE1F0;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 10px;
+}
+
+.table-util .input-group-btn {
+    width: auto;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.table-util .input-group-btn:last-child {
+    float: right;
+}
+
+/*左侧菜单栏*/
+#menu-bar {
+    width: 170px;
+    position: absolute;
+    background-color: #fdfdfd;
+}
+
+#menu-bar strong {
+    color: #fff;
+    background-color: #3878a4;
+    padding: 10px 15px;
+    display: block;
+    cursor: pointer;
+    margin-bottom: 1px;
+    font-size:14px;
+}
+
+#menu-bar strong span {
+    float: right;
+}
+
+#menu-bar li {
+    border-bottom: 1px solid #e3e3e3;
+    margin-top: 0;
+    font-size:14px;
+}
+
+#main {
+    margin-left: 172px;
+}
+
+/*列表页，搜索条件提示*/
+.notice {
+    display: inline-block;
+    padding: 1px 5px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+/*form的提示 */
+.form-notice {
+    display: inline-block;
+    padding: 1px 5px;
+    margin-right: 5px;
+    text-align: right;
+    width: 140px;
+}
+
+.date-input {
+    width: 172px;
+    height: 22px;
+}
+
+.disable-select {
+    background-color: #DDDDDD;
+    max-width: 35%;
+}

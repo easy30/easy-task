@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<group>
+    <title>http</title>
+    <desc></desc>
+
+
+    <item>
+        <title>http</title>
+        <desc></desc>
+        <plugin>com.cehome.cmon.plugin.HttpPlugin</plugin>
+        <attrs>
+            <url>https://www.163.com</url>
+            <method>GET</method>
+        </attrs>
+        <params>
+
+
+            <checkSql><![CDATA[  select max(id) from equipment  ]]></checkSql>
+        </params>
+    </item>
+
+
+</group>
