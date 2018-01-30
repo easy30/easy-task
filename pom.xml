@@ -6,12 +6,12 @@
     <artifactId>easy-task</artifactId>
     <packaging>pom</packaging>
     <name>task-parent</name>
-    <version>1.0.0-SNAPSHOT</version>
-    <url>http://maven.apache.org</url>
+    <version>2.0.1-SNAPSHOT</version>
+    <url>https://github.com/cehome-com/easy-task</url>
     <properties>
         <spring-version>3.2.2.RELEASE</spring-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>1.7</java.version>
     </properties>
     <dependencies>
 
@@ -49,38 +49,144 @@
 
     </dependencies>
 
+
+
+	<modules>
+	    <module>task</module>
+	    <module>task-console</module>
+        <module>task-console-resource</module>
+        <module>task-console-app</module>
+	</modules>
+
+
+
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>maruixiang</name>
+            <email>maruixiang@sina.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>git@github.com:cehome-com/easy-task.git</connection>
+        <developerConnection>git@github.com:cehome-com/easy-task.git</developerConnection>
+        <url>https://github.com/cehome-com/easy-task</url>
+    </scm>
+
+
     <build>
         <finalName>task</finalName>
         <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.2</version>
-            <configuration>
-                <encoding>UTF-8</encoding>
-                <source>1.8</source>
-                <target>1.8</target>
-            </configuration>
-        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>internal-releases</id>
-            <name>Local Release Repository</name>
-            <url>http://192.168.0.12:8080/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>internal-snapshots</id>
-            <name>Local Snapshot Repository</name>
-            <url>http://192.168.0.12:8080/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
-	<modules>
-	<module>task</module>
-	<module>task-console</module>
-        <module>task-console-app</module>
-	</modules>
+
+    <profiles>
+        <profile>
+            <id>oss</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss-snapshots</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Gpg Signature -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>default</id>
+            <activation>
+            <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>internal-releases</id>
+                    <name>Local Release Repository</name>
+                    <url>http://192.168.0.12:8080/nexus/content/repositories/releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>internal-snapshots</id>
+                    <name>Local Snapshot Repository</name>
+                    <url>http://192.168.0.12:8080/nexus/content/repositories/snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+
+
+
+    </profiles>
+
 
 </project>

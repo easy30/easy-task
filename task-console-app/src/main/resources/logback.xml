@@ -1,58 +1,13 @@
 <configuration>
 
-   <!-- <appender name="file"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <prudent>true</prudent>
-        <rollingPolicy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/logs/emon-server-log/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>10</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%date %level %logger.%class{0}#%method [%file:%line] %msg%n</pattern>
-        </encoder>
-    </appender>-->
-
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-        <pattern>[%level] %file:%line -- %msg%n</pattern>
+        <pattern>%date %level %file:%line -- %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!--<appender name="file" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator>
-            <key>shard</key>
-            <defaultValue>root</defaultValue>
-        </discriminator>
-        <sift>
-            <appender name="file"
-                      class="ch.qos.logback.core.rolling.RollingFileAppender">
-
-                <prudent>true</prudent>
-                <rollingPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                    <fileNamePattern>/data/logs/emon-server-log/${shard}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-                    <maxFileSize>100MB</maxFileSize>
-                    <maxHistory>4</maxHistory>
-                    <totalSizeCap>500MB</totalSizeCap>
-
-                </rollingPolicy>
-
-                <encoder>
-                    <pattern>%date %level %c{0}.%method [%file:%line] %msg%n</pattern>
-                    <charset>UTF-8</charset>
-                </encoder>
-            </appender>
-
-        </sift>
-    </appender>-->
-
-
     <root level="info">
         <appender-ref ref="console" />
-      <!--  <appender-ref ref="file" />-->
     </root>
-
 
 </configuration>

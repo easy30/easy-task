@@ -8,23 +8,18 @@
 
     <modelVersion>4.0.0</modelVersion>
    
-    <artifactId>task-console</artifactId>
+    <artifactId>task-console-resource</artifactId>
     <packaging>jar</packaging>
-    <name>task console</name>
+    <name>task console resource</name>
    
     <url>http://maven.apache.org</url>
+
     <dependencies>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.cehome</groupId>
-            <artifactId>task</artifactId>
+            <artifactId>task-console</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -46,7 +41,6 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-
     </build>
 
 </project>
