@@ -305,6 +305,7 @@ public class TimeTaskService implements InitializingBean, DisposableBean {
 	public	ClientServiceProxy getClientServiceProxy(TimeTask timeTask){
 		ClientServiceProxy clientServiceProxy=new ClientServiceProxy();
 		String url=machineListService.getServiceUrl(timeTask.getAppName(),timeTask.getTargetIp());
+		if(url==null) throw new RuntimeException("can not find target url for app="+timeTask.getAppName()+", ip="+timeTask.getTargetIp()+". Ensure it is online");
 		clientServiceProxy.setBaseUrl(url);
 		return clientServiceProxy;
 

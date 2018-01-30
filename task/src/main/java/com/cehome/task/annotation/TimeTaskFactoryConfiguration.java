@@ -25,6 +25,9 @@ public class TimeTaskFactoryConfiguration {
     @Value("${task.factory.appEnv:}")
     private String appEnv;
 
+    @Value("${task.factory.createTable:false}")
+    private boolean createTable;
+
     @Value("${task.datasource.url}")
     private String url;
     @Value("${task.datasource.username}")
@@ -36,6 +39,9 @@ public class TimeTaskFactoryConfiguration {
     private String redisHost;
     @Value("${task.redis.port:6379}")
     private int redisPort;
+
+
+
 
 
 
@@ -69,8 +75,8 @@ public class TimeTaskFactoryConfiguration {
 
         //timeTaskFactory.setClusterMode(false);
         if(StringUtils.isNotBlank(redisHost)) {
-            timeTaskFactory.setClusterRedisHost(redisHost);
-            timeTaskFactory.setClusterRedisPort(redisPort);
+            timeTaskFactory.setRedisHost(redisHost);
+            timeTaskFactory.setRedisPort(redisPort);
         }
 
         return timeTaskFactory;

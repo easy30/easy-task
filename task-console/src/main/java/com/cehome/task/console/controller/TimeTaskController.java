@@ -249,6 +249,9 @@ public class TimeTaskController implements ApplicationContextAware {
             timeTask.setPriority(1);
             if(appNames.size()==1){
             	timeTask.setAppName(appNames.iterator().next());
+				String randomIp= machineListService.getRandomMachine(timeTask.getAppName());
+				if(randomIp!=null) timeTask.setTargetIp(randomIp);
+
 			}
 			//String randomIp= machineListService.getRandomMachine(null);
             //if(randomIp!=null) timeTask.setTargetIp(randomIp);
@@ -503,30 +506,36 @@ public class TimeTaskController implements ApplicationContextAware {
 	public String getLog(@RequestParam(value = "id") long id, @RequestParam(value = "pn", defaultValue = "1") long pn,
 	// @RequestParam(value = "ps",defaultValue="1024") long ps,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        checkPass(id,request);
-        Cookie cookie = WebUtils.getCookie(request, "pageSize");
-		long pageSize = cookie == null ? 10 : Convert.toLong(cookie.getValue(), 10);
-		long ps = pageSize * 1024;
-		TimeTask timeTask = timeTaskService.get(id);
-		//String host = timeTask.getTargetIp();
-		//String port = timeTaskFactory.getRmiPort();
-		String logName = "task/" + timeTask.getId() + "-*.log";
-		ClientServiceProxy clientServiceProxy = timeTaskService.getClientServiceProxy(timeTask);
-		long ts = Convert.toLong(clientServiceProxy.getLogSize(logName),0);
-		long totalSize = ts / 1024;
-		long pageCount = (ts - 1) / ps + 1;
-		if (pn == -2 || pn > pageCount)
-			pn = pageCount;
-		if (pn < 1)
-			pn = 1;
-		String log = clientServiceProxy.getLog(logName, pn, ps);
-		model.addAttribute("taskName", timeTask.getId() + "[" + timeTask.getName() + "]");
-		model.addAttribute("log", log);
-		model.addAttribute("pn", pn);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("pageCount", pageCount);
-		model.addAttribute("totalSize", totalSize);
-		return "timeTask/getLog";
+		try {
+			checkPass(id, request);
+			Cookie cookie = WebUtils.getCookie(request, "pageSize");
+			long pageSize = cookie == null ? 10 : Convert.toLong(cookie.getValue(), 10);
+			long ps = pageSize * 1024;
+			TimeTask timeTask = timeTaskService.get(id);
+			//String host = timeTask.getTargetIp();
+			//String port = timeTaskFactory.getRmiPort();
+			String logName = "task/" + timeTask.getId() + "-*.log";
+			ClientServiceProxy clientServiceProxy = timeTaskService.getClientServiceProxy(timeTask);
+			long ts = Convert.toLong(clientServiceProxy.getLogSize(logName), 0);
+			long totalSize = ts / 1024;
+			long pageCount = (ts - 1) / ps + 1;
+			if (pn == -2 || pn > pageCount)
+				pn = pageCount;
+			if (pn < 1)
+				pn = 1;
+			String log = clientServiceProxy.getLog(logName, pn, ps);
+			model.addAttribute("taskName", timeTask.getId() + "[" + timeTask.getName() + "]");
+			model.addAttribute("log", log);
+			model.addAttribute("pn", pn);
+			model.addAttribute("pageSize", pageSize);
+			model.addAttribute("pageCount", pageCount);
+			model.addAttribute("totalSize", totalSize);
+			return "timeTask/getLog";
+		}catch (Exception e){
+			logger.error("getLog",e);
+			model.addAttribute("message", ""+e);
+			return "timeTask/message";
+		}
 
 	}
 

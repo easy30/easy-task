@@ -26,6 +26,12 @@ public class TimeTaskClientConfiguration {
     @Value("${task.useHostName:false}")
     private boolean useHostName;
 
+    @Value("${task.heartBeatSendInterval:10000}")
+    private long heartBeatSendInterval;
+
+    @Value("${task.taskCheckInterval:5000}")
+    private long taskCheckInterval;
+
 
     @Bean
     public TimeTaskClient createClientTimeTask(){
@@ -36,6 +42,8 @@ public class TimeTaskClientConfiguration {
         timeTaskClient.setLogPackages(logPackages);
         //use hostname
         timeTaskClient.setUseHostName(useHostName);
+        timeTaskClient.setHeartBeatSendInterval(heartBeatSendInterval);
+        timeTaskClient.setTaskCheckInterval(taskCheckInterval);
         return timeTaskClient;
     }
 

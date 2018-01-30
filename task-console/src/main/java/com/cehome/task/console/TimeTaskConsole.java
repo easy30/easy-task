@@ -18,26 +18,35 @@ public class TimeTaskConsole implements ApplicationContextAware,BeanPostProcesso
     protected static final Logger logger = LoggerFactory.getLogger(TimeTaskConsole.class);
     @Autowired
     TimeTaskFactory timeTaskFactory;
-    //@Value("${}")
-    private long switchCheckInterval =30*1000;
+
+    private long heartBeatFailSwitchTime;
+    private long heartBeatCheckInterval;
 
     //-- 容灾切换
-    private boolean clusterSwitchable=true;
+    private boolean switchEnable =true;
 
-    public long getSwitchCheckInterval() {
-        return switchCheckInterval;
+    public long getHeartBeatFailSwitchTime() {
+        return heartBeatFailSwitchTime;
     }
 
-    public void setSwitchCheckInterval(long switchCheckInterval) {
-        this.switchCheckInterval = switchCheckInterval;
+    public void setHeartBeatFailSwitchTime(long heartBeatFailSwitchTime) {
+        this.heartBeatFailSwitchTime = heartBeatFailSwitchTime;
     }
 
-    public boolean isClusterSwitchable() {
-        return clusterSwitchable;
+    public long getHeartBeatCheckInterval() {
+        return heartBeatCheckInterval;
     }
 
-    public void setClusterSwitchable(boolean clusterSwitchable) {
-        this.clusterSwitchable = clusterSwitchable;
+    public void setHeartBeatCheckInterval(long heartBeatCheckInterval) {
+        this.heartBeatCheckInterval = heartBeatCheckInterval;
+    }
+
+    public boolean isSwitchEnable() {
+        return switchEnable;
+    }
+
+    public void setSwitchEnable(boolean switchEnable) {
+        this.switchEnable = switchEnable;
     }
 
 
@@ -45,8 +54,8 @@ public class TimeTaskConsole implements ApplicationContextAware,BeanPostProcesso
     protected MachineSwitchService createMachineSwitchService(){
         MachineSwitchService service=new MachineSwitchService();//  factory.createBean(MachineListService.class);//  new MachineListService();
         //service.setClusterName(timeTaskFactory.getName());
-        service.setHeartBeatInterval(timeTaskFactory.getClusterHeartBeatInterval());
-        service.setSwitchCheckInterval(getSwitchCheckInterval());
+        //.setHeartBeatInterval(timeTaskFactory.getClusterHeartBeatInterval());
+        //service.setSwitchCheckInterval(getHeartBeatCheckInterval());
         return  service;
     }
 
@@ -59,7 +68,7 @@ public class TimeTaskConsole implements ApplicationContextAware,BeanPostProcesso
             TimeTaskUtil.registerBean(factory,"machineListService", new MachineListService2());
             TimeTaskUtil.registerBean(factory,"defaultGlobalService", new DefaultGlobalService());
             TimeTaskUtil.registerBean(factory,"timeTaskService", new TimeTaskService());
-            if(isClusterSwitchable()) {
+            if(isSwitchEnable()) {
                 TimeTaskUtil.registerBean(factory, "machineSwitchService", createMachineSwitchService());
             }
         }else{

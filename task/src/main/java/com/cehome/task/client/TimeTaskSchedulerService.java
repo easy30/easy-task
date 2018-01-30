@@ -68,15 +68,6 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     @Autowired
     TimeTaskClient timeTaskClient;
 
-    private long checkTaskInterval;
-
-    public long getCheckTaskInterval() {
-        return checkTaskInterval;
-    }
-
-    public void setCheckTaskInterval(long checkTaskInterval) {
-        this.checkTaskInterval = checkTaskInterval;
-    }
 
     @Override
     public void destroy() throws Exception {
@@ -159,6 +150,9 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                 if(bean==null){
                     throw new Exception("can not find bean of name :"+beanName);
                 }
+                if((bean instanceof TimeTaskPlugin) && (StringUtils.isBlank(beanMethod))){
+                    beanMethod="run";
+                }
 
                 Method[] methods = bean.getClass().getMethods();
                 boolean find = false;
@@ -218,7 +212,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                     logger.error("run ",e);
                 }
             }
-        }, getCheckTaskInterval());
+        }, 0,timeTaskClient.getTaskCheckInterval());
     }
 
    /* @Scheduled(fixedDelay = Constants.CLIENT_CHECK_TASK_INTERVAL)
@@ -413,16 +407,21 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     private void runStopMethod(final TaskRunnable runnable){
         TimeTask timeTask=runnable.getTimeTask();
         final BeanConfig beanConfig = TimeTaskUtil.getJSON(timeTask.getConfig(), BeanConfig.class);
-        final String stopMethod =beanConfig.getStopMethod();
+        String stopMethod =beanConfig.getStopMethod();
+        Object bean = applicationContext.getBean(beanConfig.getBean());
+        if((bean instanceof TimeTaskPlugin) && (StringUtils.isBlank(stopMethod))){
+            stopMethod="stop";
+        }
+        final String stopMethod2=stopMethod;
         if (stopMethod != null && stopMethod.trim().length() > 0) {
             FutureTask<String> future = new FutureTask<String>(new Callable<String>() {// 使用Callable接口作为构造参数
                 public String call() {
                     try {
-                        Object bean = applicationContext.getBean(beanConfig.getBean());
-                        Method method = bean.getClass().getMethod(stopMethod, TimeTaskContext.class);
+
+                        Method method = bean.getClass().getMethod(stopMethod2, TimeTaskContext.class);
                         method.invoke(bean, runnable.getTimeTaskContext());
                     } catch (Exception e) {
-                        logger.error("执行停止方法出错. "+stopMethod+"(TimeTaskContext timeTaskContext)", e);
+                        logger.error("执行停止方法出错. "+stopMethod2+"(TimeTaskContext timeTaskContext)", e);
                     }
                     return null;
                 }

@@ -110,7 +110,7 @@
             </td>
             <td>Bean方法：</td>
             <td><input type="text" class="form-control input-xs" style="margin: 3px" id="method" name="method"
-                       value="${invoker.method}" data-rule-required="true"/></td>
+                       value="${invoker.method}" /></td>
         </tr>
         <tr>
             <td>Bean参数：</td>

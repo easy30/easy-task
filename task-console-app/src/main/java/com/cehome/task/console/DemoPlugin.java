@@ -13,11 +13,17 @@ import java.net.Inet4Address;
 public class DemoPlugin extends TimeTaskPlugin {
     private static final Logger logger = LoggerFactory.getLogger(DemoPlugin.class);
     @Override
-    protected void doRun(TimeTaskContext context, JSONObject args) throws Exception {
+    public void run(TimeTaskContext context, JSONObject args) throws Exception {
         logger.info("task id="+context.getId());
+        logger.info("task name="+context.getName());
         logger.info("task run on ip="+ Inet4Address.getLocalHost().getHostAddress());
-        logger.info("task sleep 1000");
-        Thread.sleep(1000);
+        logger.info("task sleep 2000");
+        Thread.sleep(2000);
         logger.info("task run count="+context.getRunTimes());
+    }
+
+    @Override
+    public void stop(TimeTaskContext context) throws Exception {
+        logger.info("task "+context.getName()+" is stopped ");
     }
 }

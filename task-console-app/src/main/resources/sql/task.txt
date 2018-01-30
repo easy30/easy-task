@@ -1,0 +1,43 @@
+CREATE TABLE `${tableName}` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `target_ip` varchar(100) NOT NULL DEFAULT '' COMMENT '定时程序允许运行的IP',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '定时程序文字描述',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '定时程序状态',
+  `config` varchar(255) DEFAULT NULL COMMENT '扩展字段',
+  `last_target_ip` varchar(100) DEFAULT '' COMMENT '本定时程序最后一次运行IP',
+  `last_start_time` datetime DEFAULT NULL COMMENT '本定时程序最后一次运行开始时间',
+  `last_end_time` datetime DEFAULT NULL COMMENT '本定时程序最后一次运行结束时间',
+  `create_time` datetime NOT NULL COMMENT '本记录创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '本记录修改时间',
+  `category1` varchar(255) DEFAULT NULL COMMENT '分类',
+  `priority` int(11) DEFAULT '0' COMMENT '所属线程池',
+  `app_name` varchar(100) DEFAULT NULL COMMENT '时间程序所属应用名称',
+  `cron_type` int(11) NOT NULL DEFAULT '0' COMMENT 'cron_type',
+  `category2` varchar(255) DEFAULT NULL COMMENT '分类',
+  `category3` varchar(255) DEFAULT NULL COMMENT '分类',
+  `category4` varchar(255) DEFAULT NULL COMMENT '分类',
+  `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'user_id',
+  `cron` varchar(100) DEFAULT NULL COMMENT 'cron表达式',
+  `task_type` int(11) NOT NULL DEFAULT '0' COMMENT '自定义类型',
+  `task_config` mediumtext COMMENT '任务额外配置',
+  `log_level` varchar(10) DEFAULT NULL COMMENT '日志级别',
+  `mon_flag` smallint(6) NOT NULL DEFAULT '0' COMMENT '0:不监控  1:监控',
+  `mon_config` varchar(100) DEFAULT NULL COMMENT '监控配置',
+  `create_user` varchar(100) DEFAULT NULL COMMENT '创建者',
+  `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `oper_user` varchar(100) DEFAULT NULL,
+  `task_result` mediumtext COMMENT 'run result',
+  PRIMARY KEY (`id`),
+  KEY `idx_app_update` (`app_name`,`update_time`),
+  KEY `ids_app_id` (`app_name`,`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='定时任务';
+
+
+INSERT INTO `easy_task` (target_ip,name,status,config,create_time,update_time,category1,app_name,oper_user,oper_time,user_id,cron)
+values('${ip}','demo',1,'{\"args\":{},\"method\":\"run\",\"stopMethod\":\"\",\"bean\":\"demoPlugin\"}',
+now(),now(),'default','${appName}','admin',now(),1,'5s');
+
+
+
+
+

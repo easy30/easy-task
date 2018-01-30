@@ -30,6 +30,7 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 	@Autowired
 	protected TimeTaskClient timeTaskClient;
 
+
 	public String getAppName() {
 		return appName;
 	}
@@ -70,9 +71,13 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 		TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				schedule();
+				try {
+					schedule();
+				}catch (Exception e){
+					logger.error("heart bean error",e);
+				}
 			}
-		}, getClusterHeartBeatInterval());
+		}, 0,getClusterHeartBeatInterval());
 	}
     /**
      * 机器心跳
@@ -81,10 +86,12 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
      */
 	//@Scheduled(fixedDelay = Constants.CLIENT_HEART_BEAT_INTERVAL)
 	public void schedule()   {
-		logger.info("\r\n\r\n");
-		logger.info("发送心跳，更新在线机器列表");
-		configService.hset(getClusterName()  + KEY_MACHINES+ appName, timeTaskClient.getLocalMachine(), ""+System.currentTimeMillis());
-		configService.expire(getClusterName() + KEY_MACHINES+ appName,3600*24*7);
+
+			logger.info("\r\n\r\n");
+			logger.info("发送心跳，更新在线机器列表");
+			configService.hset(getClusterName() + KEY_MACHINES + appName, timeTaskClient.getLocalMachine(), "" + System.currentTimeMillis());
+			configService.expire(getClusterName() + KEY_MACHINES + appName, 3600 * 24 * 7);
+
 	}
 
 	 

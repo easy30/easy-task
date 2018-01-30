@@ -28,8 +28,9 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
     protected static final Logger logger = LoggerFactory.getLogger(TimeTaskClient.class);
     private String logPackages;
     private String logPath;
-    private String logEncoding="UTF-8";
-    private long checkTaskInterval =5 * 1000;
+    private String logEncoding;
+    private long taskCheckInterval;
+    private long heartBeatSendInterval;
 
     private boolean useHostName=false;
 
@@ -38,6 +39,14 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
 
     @Autowired
     TimeTaskFactory timeTaskFactory;
+
+    public long getHeartBeatSendInterval() {
+        return heartBeatSendInterval;
+    }
+
+    public void setHeartBeatSendInterval(long heartBeatSendInterval) {
+        this.heartBeatSendInterval = heartBeatSendInterval;
+    }
 
     public String getLogPackages() {
         return logPackages;
@@ -63,12 +72,12 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
         this.logEncoding = logEncoding;
     }
 
-    public long getCheckTaskInterval() {
-        return checkTaskInterval;
+    public long getTaskCheckInterval() {
+        return taskCheckInterval;
     }
 
-    public void setCheckTaskInterval(long checkTaskInterval) {
-        this.checkTaskInterval = checkTaskInterval;
+    public void setTaskCheckInterval(long taskCheckInterval) {
+        this.taskCheckInterval = taskCheckInterval;
     }
 
     public boolean isUseHostName() {
@@ -166,7 +175,6 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
         TimeTaskSchedulerService timeTaskSchedulerService =new  TimeTaskSchedulerService();
         //factory.createBean(  TimeTaskSchedulerService.class);
         timeTaskSchedulerService.setAppName(timeTaskFactory.getAppName());
-        timeTaskSchedulerService.setCheckTaskInterval(getCheckTaskInterval());
         return timeTaskSchedulerService;
     }
 
@@ -175,7 +183,7 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
         machineHeartBeatService.setAppName(timeTaskFactory.getAppName());
         //machineHeartBeatService.setUseHostName(useHostName);
         //machineHeartBeatService.setClusterName(timeTaskFactory.getName());
-        machineHeartBeatService.setClusterHeartBeatInterval(timeTaskFactory.getClusterHeartBeatInterval());
+        machineHeartBeatService.setClusterHeartBeatInterval(getHeartBeatSendInterval());
         return  machineHeartBeatService;
     }
 

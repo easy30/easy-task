@@ -45,11 +45,11 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
     private boolean clusterMode=true;
 
 
-    private String clusterRedisHost;
-    private int clusterRedisPort;
+    private String redisHost;
+    private int redisPort;
 
 
-    private long clusterHeartBeatInterval =20 * 1000;
+
 
     private static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
     protected  String localIP;
@@ -88,8 +88,8 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
     protected ConfigService createRedisService(){
 
         ConfigService configService =null;
-        if(StringUtils.isNotBlank(clusterRedisHost)) {
-            configService = new RedisConfigService(clusterRedisHost, clusterRedisPort);
+        if(StringUtils.isNotBlank(redisHost)) {
+            configService = new RedisConfigService(redisHost, redisPort);
         }else{
             configService=new DatabaseConfigService();
         }
@@ -112,7 +112,7 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
 
         if(isClusterMode()) {
             logger.info("time task init with cluster mode");
-            if(StringUtils.isBlank(clusterRedisHost)) {
+            if(StringUtils.isBlank(redisHost)) {
                 factory.registerSingleton("timeTaskCacheDao",createTimeTaskCacheDao());
             }
             configService =createRedisService();
@@ -157,20 +157,20 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
         this.clusterMode = clusterMode;
     }
 
-    public String getClusterRedisHost() {
-        return clusterRedisHost;
+    public String getRedisHost() {
+        return redisHost;
     }
 
-    public void setClusterRedisHost(String clusterRedisHost) {
-        this.clusterRedisHost = clusterRedisHost;
+    public void setRedisHost(String redisHost) {
+        this.redisHost = redisHost;
     }
 
-    public int getClusterRedisPort() {
-        return clusterRedisPort;
+    public int getRedisPort() {
+        return redisPort;
     }
 
-    public void setClusterRedisPort(int clusterRedisPort) {
-        this.clusterRedisPort = clusterRedisPort;
+    public void setRedisPort(int redisPort) {
+        this.redisPort = redisPort;
     }
 
     public String getAppEnv() {
@@ -204,13 +204,7 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
         this.tableName = tableName;
     }*/
 
-    public long getClusterHeartBeatInterval() {
-        return clusterHeartBeatInterval;
-    }
 
-    public void setClusterHeartBeatInterval(long clusterHeartBeatInterval) {
-        this.clusterHeartBeatInterval = clusterHeartBeatInterval;
-    }
 
 
     @Override
@@ -223,8 +217,8 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
         return bean;
     }
 
-    public static void scheduleWithFixedDelay(Runnable runnable,final long interval){
-        scheduledExecutorService.scheduleWithFixedDelay(runnable ,interval,interval, TimeUnit.MILLISECONDS);
+    public static void scheduleWithFixedDelay(Runnable runnable,final long first,final long interval){
+        scheduledExecutorService.scheduleWithFixedDelay(runnable ,first,interval, TimeUnit.MILLISECONDS);
     }
 
     public  String getLocalIP() {

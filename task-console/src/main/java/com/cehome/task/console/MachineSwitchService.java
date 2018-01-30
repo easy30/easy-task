@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,33 +34,23 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 	protected ConfigService configService;
 	@Autowired
 	private MachineListService machineListService;
-	private long heartBeatInterval;
-	private long switchCheckInterval;
+	@Autowired
+	private TimeTaskConsole timeTaskConsole;
 	//protected long SWITCH_TIME_SPAN = Constants.CLIENT_HEART_BEAT_INTERVAL+ 10;
-	public long getHeartBeatInterval() {
-		return heartBeatInterval;
-	}
 
-	public void setHeartBeatInterval(long heartBeatInterval) {
-		this.heartBeatInterval = heartBeatInterval;
-	}
-
-	public long getSwitchCheckInterval() {
-		return switchCheckInterval;
-	}
-
-	public void setSwitchCheckInterval(long switchCheckInterval) {
-		this.switchCheckInterval = switchCheckInterval;
-	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				schedule();
+				try {
+					schedule();
+				}catch (Exception e){
+					logger.error("switch run error",e);
+				}
 			}
-		},getSwitchCheckInterval());
+		},0,timeTaskConsole.getHeartBeatCheckInterval());
 	}
 
 	/*private Set<String> getAllMachines(){
@@ -76,7 +67,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 		logger.info("\r\n\r\n");
 		// 注：监控处理：本部分逻辑其实最好让另一个应用（两台机器就行）执行比较稳妥;同一个应用可能会在处理过程中机器发布重启。
 		logger.info("处理机器列表前尝试进行加锁");
-		if (configService.simpleLock(getClusterName() + KEY_LOCK, 15)) {
+		if (configService.simpleLock(getClusterName() + KEY_LOCK, 60)) {
 			try {
 				logger.info("加锁成功，准备获取机器列表");
 
@@ -107,7 +98,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 			for (Map.Entry<String, String> e : map.entrySet()) {
 				String hostInfo = (String) e.getKey();
 				long time = Convert.toLong( e.getValue(),0);
-				if (now - time <= getHeartBeatInterval()*3) {
+				if (now - time <= timeTaskConsole.getHeartBeatFailSwitchTime()) {
 					onlines.add(hostInfo);
 
 					if (configService.hexists(getClusterName()  + KEY_MACHINES_START+appName, hostInfo)){
@@ -134,7 +125,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 				}
 			}
 
-			logger.info("还原刚上线的机器. rebackip size=" + connecteds.size());
+			logger.info(connecteds.size()==0?"没有需要还原的机器":"需要还原刚上线的机器数=" + connecteds.size());
 			for (String machine : connecteds) {
 				recoverIP(appName,machine);
 				configService.hdel( getClusterName()  + KEY_MACHINES_START+appName, machine);
