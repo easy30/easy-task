@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Set;
 
 public interface ConfigService {
+
+
     boolean hset(String key, String field, String value);
 
     boolean hdel(String key, String... fields);
@@ -25,4 +27,6 @@ public interface ConfigService {
     Set<String> smembers(String key);
 
     boolean simpleUnlock(String key);
+
+    long getTime();
 }

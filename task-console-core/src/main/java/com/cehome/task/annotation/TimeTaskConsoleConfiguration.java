@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TimeTaskConsoleConfiguration {
 
-    @Value("${task.heartBeatFailSwitchTime:30000}")
+    @Value("${task.heartBeatFailSwitchTime:60000}")
     private long heartBeatFailSwitchTime;
     @Value("${task.heartBeatCheckInterval:30000}")
     private long heartBeatCheckInterval;
 
     //-- 容灾切换
-    @Value("${task.switchEnable:true}")
+    @Value("${task.heartBeatSwitchEnable:true}")
     private boolean switchEnable =true;
 
     @Bean

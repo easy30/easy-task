@@ -25,8 +25,8 @@ public class TimeTaskFactoryConfiguration {
     @Value("${task.factory.appEnv:}")
     private String appEnv;
 
-    @Value("${task.factory.createTable:false}")
-    private boolean createTable;
+    //@Value("${task.factory.createTable:false}")
+    //private boolean createTable;
 
     @Value("${task.datasource.url}")
     private String url;
@@ -35,21 +35,17 @@ public class TimeTaskFactoryConfiguration {
     @Value("${task.datasource.password}")
     private String password;
 
-    @Value("${task.redis.host:}")
+    @Value("${task.factory.redis.host:}")
     private String redisHost;
-    @Value("${task.redis.port:6379}")
+    @Value("${task.factory.redis.port:6379}")
     private int redisPort;
 
 
 
 
-
-
-
-    @Bean
+    //@Bean
     //@ConfigurationProperties(prefix = "task.datasource")
     DataSource createDataSource(){
-
         DataSource dataSource=new org.apache.tomcat.jdbc.pool.DataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);

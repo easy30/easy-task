@@ -53,9 +53,9 @@
 
 	<modules>
 	    <module>task</module>
-	    <module>task-console</module>
+	    <module>task-console-core</module>
         <module>task-console-resource</module>
-        <module>task-console-app</module>
+        <module>task-console</module>
 	</modules>
 
 

@@ -212,7 +212,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                     logger.error("run ",e);
                 }
             }
-        }, 0,timeTaskClient.getTaskCheckInterval());
+        }, timeTaskClient.getTaskCheckInterval(),timeTaskClient.getTaskCheckInterval());
     }
 
    /* @Scheduled(fixedDelay = Constants.CLIENT_CHECK_TASK_INTERVAL)

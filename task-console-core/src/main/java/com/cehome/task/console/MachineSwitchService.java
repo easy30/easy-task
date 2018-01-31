@@ -50,7 +50,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 					logger.error("switch run error",e);
 				}
 			}
-		},0,timeTaskConsole.getHeartBeatCheckInterval());
+		},timeTaskConsole.getHeartBeatCheckInterval(),timeTaskConsole.getHeartBeatCheckInterval());
 	}
 
 	/*private Set<String> getAllMachines(){
@@ -86,7 +86,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 		}
 	}
 	private void doWithApp(String appName){
-		long now = System.currentTimeMillis();
+		long now = configService.getTime();// System.currentTimeMillis();
 		Map<String, String> map = configService.hgetAll( getClusterName()  + KEY_MACHINES+appName);
 		if (map != null) {
 			//Set<String> allMachines=getAllMachines();

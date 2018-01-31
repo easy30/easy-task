@@ -143,6 +143,13 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
     }
 
     @Override
+    public long getTime() {
+       Date date=(Date) sessionFactory.queryValue("select now()").getValue();
+       return date.getTime();
+
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         sessionFactory=timeTaskCacheDao.getSessionFactory();
     }

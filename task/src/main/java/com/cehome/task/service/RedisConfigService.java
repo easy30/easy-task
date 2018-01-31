@@ -4,6 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -226,6 +227,20 @@ public class RedisConfigService implements ConfigService {
             if(jedis!=null)jedis.close();
         }
     }
+
+    @Override
+    public long getTime() {
+        Jedis jedis=null;
+        try {
+            jedis = getJedis();
+            List<String> time=jedis.time();
+            return Long.parseLong(time.get(0)+time.get(1).substring(0,3));
+        }finally {
+            if(jedis!=null)jedis.close();
+        }
+
+    }
+
 
     public static void main(String[] args) {
         //ConfigService configService=new ConfigService();

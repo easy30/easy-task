@@ -89,7 +89,7 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 
 			logger.info("\r\n\r\n");
 			logger.info("发送心跳，更新在线机器列表");
-			configService.hset(getClusterName() + KEY_MACHINES + appName, timeTaskClient.getLocalMachine(), "" + System.currentTimeMillis());
+			configService.hset(getClusterName() + KEY_MACHINES + appName, timeTaskClient.getLocalMachine(), "" + configService.getTime());
 			configService.expire(getClusterName() + KEY_MACHINES + appName, 3600 * 24 * 7);
 
 	}

@@ -61,8 +61,8 @@ public class TimeTaskController implements ApplicationContextAware {
     TimeTaskFactory timeTaskFactory;
 
 	@RequestMapping("index.htm")
-	public String index(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		return "timeTask/index";
+	public void index(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		response.sendRedirect("list.htm");
 	}
 
 	@RequestMapping("list.htm")

@@ -4,6 +4,7 @@ import com.cehome.task.annotation.EnableTimeTaskClient;
 import com.cehome.task.annotation.EnableTimeTaskConsole;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,9 +17,7 @@ import java.io.IOException;
 @EnableTimeTaskClient
 public class Application {
     public static void main(String[] args) {
-        TableCreator.execute();
         SpringApplication.run(Application.class,args);
-        System.out.println("ok");
     }
 
     @RequestMapping("/")

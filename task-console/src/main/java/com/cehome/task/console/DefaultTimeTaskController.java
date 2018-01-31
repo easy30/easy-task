@@ -1,5 +1,6 @@
-package com.cehome.task.console.controller;
+package com.cehome.task.console;
 
+import com.cehome.task.console.controller.TimeTaskController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

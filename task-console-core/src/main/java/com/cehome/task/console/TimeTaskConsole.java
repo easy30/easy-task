@@ -77,7 +77,7 @@ public class TimeTaskConsole implements ApplicationContextAware,BeanPostProcesso
             TimeTaskUtil.registerBean(factory,"timeTaskService", new TimeTaskService());
         }
 
-        TimeTaskUtil.registerBean(factory,"defaultTimeTaskController",new DefaultTimeTaskController());
+        //TimeTaskUtil.registerBean(factory,"defaultTimeTaskController",new DefaultTimeTaskController());
 
 
 
