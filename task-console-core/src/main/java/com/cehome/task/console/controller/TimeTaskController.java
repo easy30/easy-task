@@ -163,7 +163,7 @@ public class TimeTaskController implements ApplicationContextAware {
 
 		String url = TimeTaskUtil.getFullUrl(request);
         url = TimeTaskUtil.removeParam(url, "scroll");
-		String baseUrl = TimeTaskUtil.removeParam(url, "pn");
+		String basePageUrl = TimeTaskUtil.removeParam(url, "pn");
 
 		model.addAttribute("list", list);
 		model.addAttribute("words", words);
@@ -178,7 +178,7 @@ public class TimeTaskController implements ApplicationContextAware {
         //model.addAttribute("admin", admin);
 
 		model.addAttribute("url", url);
-		model.addAttribute("baseUrl", baseUrl);
+		model.addAttribute("basePageUrl", basePageUrl);
 		model.addAttribute("pn", pn);
 		model.addAttribute("ps", ps);
         model.addAttribute("scroll", scroll);

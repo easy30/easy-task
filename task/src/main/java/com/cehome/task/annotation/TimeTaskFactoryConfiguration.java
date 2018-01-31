@@ -25,6 +25,9 @@ public class TimeTaskFactoryConfiguration {
     @Value("${task.factory.appEnv:}")
     private String appEnv;
 
+    @Value("${task.factory.className:}")
+    private String factoryclassName;
+
     //@Value("${task.factory.createTable:false}")
     //private boolean createTable;
 
