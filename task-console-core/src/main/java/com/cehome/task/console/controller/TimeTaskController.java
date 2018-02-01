@@ -506,6 +506,8 @@ public class TimeTaskController implements ApplicationContextAware {
 	public String getLog(@RequestParam(value = "id") long id, @RequestParam(value = "pn", defaultValue = "1") long pn,
 	// @RequestParam(value = "ps",defaultValue="1024") long ps,
 			HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		String clientLogUrl="";
+		String logName="";
 		try {
 			checkPass(id, request);
 			Cookie cookie = WebUtils.getCookie(request, "pageSize");
@@ -514,8 +516,11 @@ public class TimeTaskController implements ApplicationContextAware {
 			TimeTask timeTask = timeTaskService.get(id);
 			//String host = timeTask.getTargetIp();
 			//String port = timeTaskFactory.getRmiPort();
-			String logName = "task/" + timeTask.getId() + "-*.log";
+			logName = "task/" + timeTask.getId() + "-*.log";
 			ClientServiceProxy clientServiceProxy = timeTaskService.getClientServiceProxy(timeTask);
+			clientLogUrl=clientServiceProxy.getBaseUrl()+ Constants.CLIENT_SERVICE_URL_GET_LOG;
+			model.addAttribute("clientLogUrl", clientLogUrl);
+			model.addAttribute("logName", logName);
 			long ts = Convert.toLong(clientServiceProxy.getLogSize(logName), 0);
 			long totalSize = ts / 1024;
 			long pageCount = (ts - 1) / ps + 1;
@@ -532,8 +537,8 @@ public class TimeTaskController implements ApplicationContextAware {
 			model.addAttribute("totalSize", totalSize);
 			return "timeTask/getLog";
 		}catch (Exception e){
-			logger.error("getLog",e);
-			model.addAttribute("message", ""+e);
+			logger.error("getLog "+clientLogUrl,e);
+			model.addAttribute("message", "url="+clientLogUrl+"<br>logName="+logName+"<br>exception="+e);
 			return "timeTask/message";
 		}
 
