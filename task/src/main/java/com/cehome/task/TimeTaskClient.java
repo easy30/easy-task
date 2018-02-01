@@ -1,13 +1,16 @@
 package com.cehome.task;
 
 import com.cehome.task.client.*;
+import com.cehome.task.client.controller.ClientServiceController;
 import com.cehome.task.service.MachineBaseService;
 import com.cehome.task.util.TimeTaskUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,22 +26,37 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor, ApplicationListener<ContextRefreshedEvent> {
+public class TimeTaskClient implements ApplicationContextAware,InitializingBean, BeanPostProcessor, ApplicationListener<ContextRefreshedEvent> {
 
     protected static final Logger logger = LoggerFactory.getLogger(TimeTaskClient.class);
+    @Value("${task.log.packages:ROOT}")
     private String logPackages;
+
+    @Value("${task.log.path}")
     private String logPath;
-    private String logEncoding;
-    private long taskCheckInterval;
+
+    @Value("${task.log.addAppNameToPath:true}")
+    private boolean addAppNameToPath;
+
+    @Value("${task.log.encoding:UTF-8}")
+    private String  logEncoding;
+
+    @Value("${task.useHostName:false}")
+    private boolean useHostName;
+
+    @Value("${task.heartBeatSendInterval:10000}")
     private long heartBeatSendInterval;
 
-    private boolean useHostName=false;
+    @Value("${task.taskCheckInterval:5000}")
+    private long taskCheckInterval;
 
     protected  String localMachine;
     private String serviceUrl;
 
     @Autowired
     TimeTaskFactory timeTaskFactory;
+
+    ApplicationContext applicationContext;
 
     public long getHeartBeatSendInterval() {
         return heartBeatSendInterval;
@@ -88,6 +106,36 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
         this.useHostName = useHostName;
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+        if(addAppNameToPath){
+            if(!logPath.endsWith("/") && !logPath.endsWith("\\")){
+                logPath+="/";
+            }
+            logPath+=timeTaskFactory.getAppName();
+
+
+        }
+
+        DefaultListableBeanFactory factory=(DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
+
+        LogWrite.start(logPackages,logPath,logEncoding);
+
+
+        TimeTaskUtil.registerBean(factory,"taskSchedulerService",clientTaskSchedulerService());
+
+
+        // 仅spring boot 用， mvc 需要手动指定
+        ClientServiceController clientServiceController=new ClientServiceController();
+        TimeTaskUtil.registerBean(factory,"springBootClientServiceController",clientServiceController);
+
+        if(timeTaskFactory.isClusterMode()) {
+            logger.info("init machineHeartBeatService ");
+            TimeTaskUtil.registerBean(factory, "machineHeartBeatService", clientMachineHeartBeatService());
+        }
+    }
+
     public String getLocalMachine(){
         if(localMachine==null) {
             String env = timeTaskFactory.getAppEnv();
@@ -106,33 +154,13 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
     }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        DefaultListableBeanFactory factory=(DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
-
-        LogWrite.start(logPackages,logPath,logEncoding);
-
-
-        TimeTaskUtil.registerBean(factory,"taskSchedulerService",clientTaskSchedulerService());
-
-        //RemoteLogService remoteLogService=clientRemoteLogService();
-
-        //TimeTaskUtil.registerBean(factory,"remoteLogService",remoteLogService);
-
-        //TimeTaskUtil.registerBean(factory,"ipRmiServiceExporter",clientIPRmiServiceExporter(remoteLogService));
-        // 仅spring boot 用， mvc 需要手动指定
-         ClientServiceController clientServiceController=new ClientServiceController();
-        TimeTaskUtil.registerBean(factory,"clientServiceController",clientServiceController);
-
-        if(timeTaskFactory.isClusterMode()) {
-            logger.info("init machineHeartBeatService ");
-            TimeTaskUtil.registerBean(factory, "machineHeartBeatService", clientMachineHeartBeatService());
-        }
-
+        this.applicationContext=applicationContext;
 
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        WebApplicationContext w= (WebApplicationContext)contextRefreshedEvent.getApplicationContext();
+        final WebApplicationContext w= (WebApplicationContext)contextRefreshedEvent.getApplicationContext();
 /*
         if(inited) {
             ClientServiceController clientServiceController = new ClientServiceController();
@@ -284,6 +312,7 @@ public class TimeTaskClient implements ApplicationContextAware,BeanPostProcessor
         return null;
 
     }
+
 
 
 }

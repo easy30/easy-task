@@ -16,34 +16,11 @@ public class TimeTaskClientConfiguration {
     //public static final String LOG_ROOT_PATH = "/data/logs";
     //public static final String LOG_ENCODING="UTF-8";
 
-    @Value("${task.log.packages:ROOT}")
-    private String logPackages;
-
-    @Value("${task.log.path}")
-    private String logPath;
-
-    @Value("${task.log.addAppNameToPath:true}")
-    private boolean addAppNameToPath;
-
-    @Value("${task.log.encoding:UTF-8}")
-    private String  logEncoding;
-
-    @Value("${task.useHostName:false}")
-    private boolean useHostName;
-
-    @Value("${task.heartBeatSendInterval:10000}")
-    private long heartBeatSendInterval;
-
-    @Value("${task.taskCheckInterval:5000}")
-    private long taskCheckInterval;
-
-
-    @Autowired
-    TimeTaskFactory timeTaskFactory;
 
     @Bean
     public TimeTaskClient createClientTimeTask(){
-        TimeTaskClient timeTaskClient =new TimeTaskClient();
+        return new TimeTaskClient();
+        /*TimeTaskClient timeTaskClient =
         //String logPath=DefaultConfigClient.getProperty("task.log.path",LOG_ROOT_PATH+"/"+DefaultConfigClient.getProjectName());
         String path=logPath;
         if(addAppNameToPath){
@@ -61,7 +38,7 @@ public class TimeTaskClientConfiguration {
         timeTaskClient.setUseHostName(useHostName);
         timeTaskClient.setHeartBeatSendInterval(heartBeatSendInterval);
         timeTaskClient.setTaskCheckInterval(taskCheckInterval);
-        return timeTaskClient;
+        return timeTaskClient;*/
     }
 
 }

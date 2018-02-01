@@ -16,6 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -26,14 +28,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcessor {
+public  class TimeTaskFactory implements ApplicationContextAware, InitializingBean, BeanPostProcessor {
     protected static final Logger logger = LoggerFactory.getLogger(TimeTaskFactory.class);
     //唯一标识、对应表名
+    @Value("${task.factory.name}")
     private String name;
     //-- 应用
+    @Value("${task.factory.appName}")
     private String appName;
     //-- 自动切换时用到
+    @Value("${task.factory.appEnv:}")
     private String appEnv;
+
+    @Value("${task.factory.redis.host:}")
+    private String redisHost;
+    @Value("${task.factory.redis.port:6379}")
+    private int redisPort;
+
+
+
+
+
+
 
     //private String rmiPort="1189";
     private DataSource dataSource;
@@ -45,9 +61,6 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
     private boolean clusterMode=true;
 
 
-    private String redisHost;
-    private int redisPort;
-
 
 
 
@@ -55,7 +68,7 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
     protected  String localIP;
     protected  String localHostName;
     ConfigService configService;
-
+    ApplicationContext applicationContext;
     public ConfigService getConfigService() {
         return configService;
     }
@@ -102,8 +115,7 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
 
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
+    public void afterPropertiesSet() throws Exception {
         if(getName()==null) throw new RuntimeException("factory name can not be null");
 
         DefaultListableBeanFactory factory=(DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
@@ -124,6 +136,12 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
 
         localIP = IpAddressUtil.getLocalHostAddress();
         localHostName=IpAddressUtil.getLocalHostName();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext=applicationContext;
+
 
          /*   String env =getAppEnv();
             if (StringUtils.isNotBlank(env)) {
@@ -228,6 +246,5 @@ public  class TimeTaskFactory implements ApplicationContextAware,BeanPostProcess
     public  String getLocalHostName() {
         return localHostName;
     }
-
 
 }

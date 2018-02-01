@@ -1,4 +1,5 @@
 package com.cehome.task.client;
+
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -10,7 +11,9 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.rolling.RollingFileAppender;
+import ch.qos.logback.core.rolling.RollingPolicy;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
+import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import ch.qos.logback.core.sift.AppenderFactory;
 import ch.qos.logback.core.util.FileSize;
 import jsharp.util.FileKit;
@@ -25,16 +28,16 @@ import java.nio.charset.Charset;
  */
 public class LogWrite {
 
-    static String BASE_LOG_NAME="com.cehome.task.client";
+    static String BASE_LOG_NAME = "com.cehome.task.client";
     static int maxHistory = 4;
     static String totalSizeCap = "500mb";
     static String maxFileSize = "100mb";
     static String pattern = "%date %level %c{0}.%method [%file:%line] %msg%n";
-   // static String charset = "UTF-8";
+    // static String charset = "UTF-8";
 
-    public static void start(String logPackages,String logPath,String charset) {
+    public static void start(String logPackages, final String logPath,final String charset) {
 
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         //Logger templateLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("com.myapp");
         //LoggerContext loggerContext = templateLogger.getLoggerContext();
 
@@ -49,15 +52,15 @@ public class LogWrite {
                 fileAppender.setName("fileAppender");
 
                 //TimeBasedRollingPolicy<ILoggingEvent> policy = new TimeBasedRollingPolicy<ILoggingEvent>();
+
                 SizeAndTimeBasedRollingPolicy<ILoggingEvent> policy = new SizeAndTimeBasedRollingPolicy<ILoggingEvent>();
                 policy.setContext(loggerContext);
                 policy.setMaxHistory(maxHistory);
                 policy.setMaxFileSize(FileSize.valueOf(maxFileSize));
-                policy.setFileNamePattern(FileKit.addSeparator(logPath) +discriminatingValue+"-%d{yyyy-MM-dd}.%i.log");//"/home/lionbule/%d{yyyy-MM-dd}.log");
+                policy.setFileNamePattern(FileKit.addSeparator(logPath) + discriminatingValue + "-%d{yyyy-MM-dd}.%i.log");//"/home/lionbule/%d{yyyy-MM-dd}.log");
                 policy.setTotalSizeCap(FileSize.valueOf(totalSizeCap));
                 policy.setParent(fileAppender);
                 policy.start();
-
 
 
                 PatternLayoutEncoder encoder = new PatternLayoutEncoder();
@@ -92,10 +95,10 @@ public class LogWrite {
         siftingAppender.start();
 
         //Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-       if(StringUtils.isBlank(logPackages)){
-           logPackages=Logger.ROOT_LOGGER_NAME;
-       }
-        for(String logPackage : logPackages.split(";")) {
+        if (StringUtils.isBlank(logPackages)) {
+            logPackages = Logger.ROOT_LOGGER_NAME;
+        }
+        for (String logPackage : logPackages.split(";")) {
             Logger logbackLogger = loggerContext.getLogger(logPackage);
             logbackLogger.setLevel(Level.INFO);
             logbackLogger.setAdditive(true);
@@ -109,15 +112,14 @@ public class LogWrite {
         logbackLogger.addAppender(siftingAppender);
 
 
-
     }
 
     public static void main(String[] args) {
-        start("com.cehome.task.client","/data/logs/aa-log/","UTF-8");
+        start("com.cehome.task.client", "/data/logs/aa-log/", "UTF-8");
         org.slf4j.Logger logger = LoggerFactory.getLogger(LogWrite.class);
-        MDC.put("shard","ma1");
+        MDC.put("shard", "ma1");
         logger.info("abc");
-        MDC.put("shard","ma2");
+        MDC.put("shard", "ma2");
         logger.info("hello");
 
     }

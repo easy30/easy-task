@@ -77,7 +77,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
 
     @Override
     public boolean sadd(String key, String member) {
-        String sql="replace into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire) values(?,'0',?,now(),now(),null)";
+        String sql="replace into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire) values(?,?,'',now(),now(),null)";
         sessionFactory.updateBySQL(sql,key,member);
         return true;
     }
@@ -102,7 +102,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
         List<TimeTaskCache> list=timeTaskCacheDao.queryList("main_key=? and "+EXPIRE,key);
         Set<String> set=new HashSet<>();
         for(TimeTaskCache timeTaskCache:list){
-            set.add(timeTaskCache.getValue());
+            set.add(timeTaskCache.getSubKey());
         }
         return set;
     }

@@ -22,6 +22,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -34,7 +36,7 @@ import java.util.concurrent.*;
  * task: id ,name, type ，express,     bean, method stopmehtod
  */
 //@Service
-public class TimeTaskSchedulerService implements InitializingBean, DisposableBean, ApplicationContextAware {
+public class TimeTaskSchedulerService implements InitializingBean, DisposableBean, ApplicationContextAware , ApplicationListener<ContextRefreshedEvent> {
     private static final Logger logger = LoggerFactory.getLogger(TimeTaskSchedulerService.class);
     ScheduledThreadPoolExecutor[] executors = null;  //创建5个执行线程
     static  int STATUS_RUNNING=1;
@@ -68,6 +70,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     @Autowired
     TimeTaskClient timeTaskClient;
 
+    private volatile boolean inited=false;
 
     @Override
     public void destroy() throws Exception {
@@ -84,6 +87,31 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
 
     private    boolean isRunning(TaskRunnable taskRunnable){
         return taskRunnable != null && taskRunnable.getStatus() == STATUS_RUNNING;
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if(inited){
+            return;
+        }
+        inited=true;
+        if(StringUtils.isBlank(appName)) throw new RuntimeException("appName is blank");
+        executors=new ScheduledThreadPoolExecutor[poolCount];
+        for(int i=0;i<poolCount;i++) {
+            ScheduledThreadPoolExecutor  executor = new ScheduledThreadPoolExecutor(threadCount);
+            executors[i]=executor;
+        }
+
+        TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    load();
+                } catch (Exception e) {
+                    logger.error("run ",e);
+                }
+            }
+        }, timeTaskClient.getTaskCheckInterval(),timeTaskClient.getTaskCheckInterval());
     }
 
     class TaskRunnable implements Runnable{
@@ -196,23 +224,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(StringUtils.isBlank(appName)) throw new RuntimeException("appName is blank");
-        executors=new ScheduledThreadPoolExecutor[poolCount];
-        for(int i=0;i<poolCount;i++) {
-            ScheduledThreadPoolExecutor  executor = new ScheduledThreadPoolExecutor(threadCount);
-            executors[i]=executor;
-        }
 
-        TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    load();
-                } catch (Exception e) {
-                    logger.error("run ",e);
-                }
-            }
-        }, timeTaskClient.getTaskCheckInterval(),timeTaskClient.getTaskCheckInterval());
     }
 
    /* @Scheduled(fixedDelay = Constants.CLIENT_CHECK_TASK_INTERVAL)
@@ -405,38 +417,46 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     }
 
     private void runStopMethod(final TaskRunnable runnable){
-        TimeTask timeTask=runnable.getTimeTask();
-        final BeanConfig beanConfig = TimeTaskUtil.getJSON(timeTask.getConfig(), BeanConfig.class);
-        String stopMethod =beanConfig.getStopMethod();
-        Object bean = applicationContext.getBean(beanConfig.getBean());
-        if((bean instanceof TimeTaskPlugin) && (StringUtils.isBlank(stopMethod))){
-            stopMethod="stop";
-        }
-        final String stopMethod2=stopMethod;
-        if (stopMethod != null && stopMethod.trim().length() > 0) {
-            FutureTask<String> future = new FutureTask<String>(new Callable<String>() {// 使用Callable接口作为构造参数
-                public String call() {
-                    try {
-
-                        Method method = bean.getClass().getMethod(stopMethod2, TimeTaskContext.class);
-                        method.invoke(bean, runnable.getTimeTaskContext());
-                    } catch (Exception e) {
-                        logger.error("执行停止方法出错. "+stopMethod2+"(TimeTaskContext timeTaskContext)", e);
-                    }
-                    return null;
-                }
-            });
-            stopMethodExecutor.execute(future);
-
-            // 在这里可以做别的任何事情
-            try {
-                future.get(5000, TimeUnit.MILLISECONDS); // 取得结果，同时设置超时执行时间为5秒。同样可以用future.get()，不设置执行超时时间取得结果
-            } catch (Exception e) {
-                logger.error("等待停止方法出错", e);
-                future.cancel(true);
-            } finally {
+        try {
+            final TimeTask timeTask = runnable.getTimeTask();
+            final BeanConfig beanConfig = TimeTaskUtil.getJSON(timeTask.getConfig(), BeanConfig.class);
+            String stopMethod = beanConfig.getStopMethod();
+            final Object bean = applicationContext.getBean(beanConfig.getBean());
+            if (bean != null && (bean instanceof TimeTaskPlugin) && (StringUtils.isBlank(stopMethod))) {
+                stopMethod = "stop";
             }
+            final String stopMethod2 = stopMethod;
+            if (stopMethod != null && stopMethod.trim().length() > 0) {
+                FutureTask<String> future = new FutureTask<String>(new Callable<String>() {// 使用Callable接口作为构造参数
+                    public String call() {
+                        MDC.put("shard", "task/" + timeTask.getId());
+                        try {
+
+                            Method method = bean.getClass().getMethod(stopMethod2, TimeTaskContext.class);
+                            method.invoke(bean, runnable.getTimeTaskContext());
+                        } catch (Exception e) {
+                            logger.error("执行停止方法出错. " + stopMethod2 + "(TimeTaskContext timeTaskContext)", e);
+                        } finally {
+                            MDC.remove("shard");
+                        }
+                        return null;
+                    }
+                });
+                stopMethodExecutor.execute(future);
+
+                // 在这里可以做别的任何事情
+                try {
+                    future.get(5000, TimeUnit.MILLISECONDS); // 取得结果，同时设置超时执行时间为5秒。同样可以用future.get()，不设置执行超时时间取得结果
+                } catch (Exception e) {
+                    logger.error("等待停止方法出错", e);
+                    future.cancel(true);
+                } finally {
+                }
+            }
+        }catch (Exception e){
+            logger.error("执行停止方法发生异常.", e);
         }
+
     }
 
 

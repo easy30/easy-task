@@ -3,9 +3,13 @@ package com.cehome.task.annotation;
 import com.cehome.task.TimeTaskFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * Created by coolma
@@ -16,17 +20,7 @@ public class TimeTaskFactoryConfiguration {
 
 
     private String driverClassName="com.mysql.jdbc.Driver";
-    @Value("${task.factory.name}")
-    private String factoryName;
 
-    @Value("${task.factory.appName}")
-    private String appName;
-
-    @Value("${task.factory.appEnv:}")
-    private String appEnv;
-
-    @Value("${task.factory.className:}")
-    private String factoryclassName;
 
     //@Value("${task.factory.createTable:false}")
     //private boolean createTable;
@@ -38,17 +32,12 @@ public class TimeTaskFactoryConfiguration {
     @Value("${task.datasource.password}")
     private String password;
 
-    @Value("${task.factory.redis.host:}")
-    private String redisHost;
-    @Value("${task.factory.redis.port:6379}")
-    private int redisPort;
 
 
-
-
-    //@Bean
+    //@Bean(name="taskDatasource")
     //@ConfigurationProperties(prefix = "task.datasource")
-    DataSource createDataSource(){
+    protected   DataSource createDataSource(){
+
         DataSource dataSource=new org.apache.tomcat.jdbc.pool.DataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
@@ -60,15 +49,16 @@ public class TimeTaskFactoryConfiguration {
 
     @Bean
     public TimeTaskFactory createTimeTaskFactory(){
+
         TimeTaskFactory timeTaskFactory =new TimeTaskFactory();
 
-        timeTaskFactory.setName(factoryName);
-        timeTaskFactory.setAppName(appName);
+        //timeTaskFactory.setName(factoryName);
+        //timeTaskFactory.setAppName(appName);
        /* if(DefaultConfigClient.isProPre()) {
             timeTaskFactory.setAppEnv("pre");
         }*/
         timeTaskFactory.setDataSource(createDataSource());
-        if(StringUtils.isNotBlank(appEnv)){
+        /*if(StringUtils.isNotBlank(appEnv)){
             timeTaskFactory.setAppEnv(appEnv);
         }
 
@@ -76,7 +66,7 @@ public class TimeTaskFactoryConfiguration {
         if(StringUtils.isNotBlank(redisHost)) {
             timeTaskFactory.setRedisHost(redisHost);
             timeTaskFactory.setRedisPort(redisPort);
-        }
+        }*/
 
         return timeTaskFactory;
     }

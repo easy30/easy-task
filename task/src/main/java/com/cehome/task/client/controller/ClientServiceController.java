@@ -1,8 +1,9 @@
-package com.cehome.task.client;
+package com.cehome.task.client.controller;
 
 import com.cehome.task.Constants;
 import com.cehome.task.TimeTaskClient;
 import com.cehome.task.TimeTaskFactory;
+import com.cehome.task.client.LogShow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -509,7 +509,7 @@ public class TimeTaskController implements ApplicationContextAware {
 		try {
 			checkPass(id, request);
 			Cookie cookie = WebUtils.getCookie(request, "pageSize");
-			long pageSize = cookie == null ? 10 : Convert.toLong(cookie.getValue(), 10);
+			long pageSize = cookie == null ? 5 : Convert.toLong(cookie.getValue(), 5);
 			long ps = pageSize * 1024;
 			TimeTask timeTask = timeTaskService.get(id);
 			//String host = timeTask.getTargetIp();
