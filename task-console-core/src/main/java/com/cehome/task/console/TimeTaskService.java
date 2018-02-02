@@ -211,7 +211,9 @@ public class TimeTaskService implements InitializingBean, DisposableBean {
 			sql += " where " + where;
 		}
 
-		sql += " order by {id} desc ";
+		if(!count) {
+			sql += " order by {id} desc ";
+		}
 
 		if (!count) {
 			sql += " limit ?,? ";

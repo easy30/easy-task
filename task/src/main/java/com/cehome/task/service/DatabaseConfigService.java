@@ -15,9 +15,30 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
     TimeTaskCacheDao timeTaskCacheDao;
     SessionFactory sessionFactory;
     private static String EXPIRE="( expire is null or expire>now())";
+
+    //private String sqlDateAdd;
+    private String sqlDateAddNow;
+    private String sqlReplace;
+    private String sqlReplaceKeys;
+
+    public DatabaseConfigService(boolean mysql){
+        if(mysql){
+            //sqlDateAdd="date_add(expire, interval ? second)";
+            sqlDateAddNow="date_add(now(), interval ? second)";
+            sqlReplace="replace";
+            sqlReplaceKeys="";
+        }else{
+
+            //sqlDateAdd="dateadd( 'second' ,?, expire)";
+            sqlDateAddNow="dateadd('second',?,now())";
+            sqlReplace="MERGE";
+            sqlReplaceKeys=" key(main_key, sub_key) ";
+        }
+    }
+
     @Override
     public boolean hset(String key, String field, String value) {
-        String sql="replace into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire) values(?,?,?,now(),now(),null)";
+        String sql=sqlReplace+" into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire) "+ sqlReplaceKeys+" values(?,?,?,now(),now(),null)";
         sessionFactory.updateBySQL(sql,key,field,value);
         return true;
     }
@@ -47,7 +68,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
 
     @Override
     public boolean expire(String key, int seconds) {
-        String sql="update "+timeTaskCacheDao.getTableName()+" set expire=date_add(expire, interval ? second)  where  main_key=? and "+EXPIRE;
+        String sql="update "+timeTaskCacheDao.getTableName()+" set expire="+sqlDateAddNow+"  where  main_key=? and "+EXPIRE;
         return sessionFactory.updateBySQL(sql,seconds,key)>1;
 
     }
@@ -77,7 +98,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
 
     @Override
     public boolean sadd(String key, String member) {
-        String sql="replace into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire) values(?,?,'',now(),now(),null)";
+        String sql=sqlReplace+"  into "+timeTaskCacheDao.getTableName()+" (main_key, sub_key,value,create_time,update_time,expire)"+sqlReplaceKeys+" values(?,?,'',now(),now(),null)";
         sessionFactory.updateBySQL(sql,key,member);
         return true;
     }
@@ -113,7 +134,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
         TimeTaskCache timeTaskCache= timeTaskCacheDao.queryOne("select now() update_time, expire,version from "+ timeTaskCacheDao.getTableName()
                 +" where main_key=?",key);
         if(timeTaskCache==null){
-            String sql="insert into "+timeTaskCacheDao.getTableName()+"(main_key, sub_key,value,expire,create_time,update_time) values(?,?,?,date_add(now(), interval ? second),now(),now())";
+            String sql="insert into "+timeTaskCacheDao.getTableName()+"(main_key, sub_key,value,expire,create_time,update_time) values(?,?,?,"+sqlDateAddNow+",now(),now())";
             try {
                 sessionFactory.updateBySQL(sql,key,"0","1",timeout);
                 return true;
@@ -127,7 +148,7 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
                 return false;
             }
             long version=timeTaskCache.getVersion();
-            String sql="update "+timeTaskCacheDao.getTableName()+" set version=version+1, expire=date_add(expire, interval ? second) " +
+            String sql="update "+timeTaskCacheDao.getTableName()+" set version=version+1, expire= "+sqlDateAddNow +
                     " where  main_key=? and version=? ";
             return sessionFactory.updateBySQL(sql,timeout,key,version)>0;
         }
@@ -136,8 +157,8 @@ public class DatabaseConfigService implements ConfigService,InitializingBean {
 
     @Override
     public boolean simpleUnlock(String key) {
-        String sql="update "+timeTaskCacheDao.getTableName()+" set expire=date_add(now(), interval -1 second) where  main_key=? " ;
-        return sessionFactory.updateBySQL(sql,key)>0;
+        String sql="update "+timeTaskCacheDao.getTableName()+" set expire="+sqlDateAddNow+" where  main_key=? " ;
+        return sessionFactory.updateBySQL(sql,-1,key)>0;
         // timeTaskCacheDao.deleteByWhere("main_key=?",key);
        // return true;
     }

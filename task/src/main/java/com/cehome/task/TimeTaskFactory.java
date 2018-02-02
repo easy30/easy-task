@@ -46,7 +46,8 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
     private int redisPort;
 
 
-
+    @Value(Constants.CONFIG_DRIVER)
+    private String driverClassName;
 
 
 
@@ -104,7 +105,7 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
         if(StringUtils.isNotBlank(redisHost)) {
             configService = new RedisConfigService(redisHost, redisPort);
         }else{
-            configService=new DatabaseConfigService();
+            configService=new DatabaseConfigService(driverClassName.indexOf("com.mysql.jdbc.Driver")>=0);
         }
 
         return configService;

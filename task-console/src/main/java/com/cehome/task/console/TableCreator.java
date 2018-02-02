@@ -1,8 +1,10 @@
 package com.cehome.task.console;
 
+import com.cehome.task.Constants;
 import com.cehome.task.util.IpAddressUtil;
 import jsharp.util.Common;
 import org.apache.commons.io.FileUtils;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -13,10 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 
 @Component
@@ -24,6 +23,14 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
 
     private static final Logger logger = LoggerFactory.getLogger(TableCreator.class);
+
+    @Value("${task.h2.start:false}")
+    private boolean h2Start;
+
+    @Value("${task.h2.port:9092}")
+    private String h2Port;
+
+
     @Value("${task.autoCreateTable:false}")
     private boolean autoCreateTable;
 
@@ -35,6 +42,9 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
     @Value("${task.fuseHostName:false}")
     private boolean useHostName;
+
+    @Value(Constants.CONFIG_DRIVER)
+    private String driverClassName;
 
     @Value("${task.datasource.url}")
     private String url;
@@ -52,6 +62,27 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
         }
     }
 
+    private boolean tableExists(Statement st ,String table ,boolean mysql) throws SQLException {
+        ResultSet rs = null;
+        try {
+            if (mysql) {
+                String sql = "show tables like '" + table + "'";
+                rs = st.executeQuery(sql);
+                return rs.next();
+            }else{
+                String sql = "show tables";
+                rs = st.executeQuery(sql);
+                while(rs.next()){
+                    if(rs.getString(1).equalsIgnoreCase(table)){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }finally {
+            Common.closeObjects(rs);
+        }
+    }
 
     public  void execute() {
 
@@ -62,10 +93,18 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
         try
         {
-
+            boolean mysql=driverClassName.indexOf("mysql") >= 0;
             String table2=table1+"_cache";
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverClassName);
+
+            if(!mysql && h2Start){
+                Server server=  Server.createTcpServer( "-tcpPort", h2Port, "-tcpAllowOthers").start();
+
+                System.out.println("h2 server listen at "+server.getURL());
+
+            }
+
             conn = DriverManager.getConnection(url, username, password);
 
 
@@ -73,14 +112,12 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                 logger.info("create begin");
                 st = conn.createStatement();
                 {
-                    String sql = "show tables like '" + table1 + "'";
 
-                    rs = st.executeQuery(sql);
-                    if (rs.next()) {
+                    if (tableExists(st,table1,mysql)) {
                         logger.info("table " + table1 + " exists.");
 
                     }else{
-                        File file = ResourceUtils.getFile("classpath:sql/task.txt");
+                        File file = ResourceUtils.getFile("classpath:sql/"+(mysql?"task_mysql.txt":"task_h2.txt"));
                         String sql1 = FileUtils.readFileToString(file,"UTF-8");
                         sql1 = sql1.replace("${tableName}", table1);
 
@@ -89,21 +126,21 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                         st.execute(sql1);
                         logger.info("created  table " + table1);
                     }
-                    rs.close();
+
 
                 }
 
-                String sql="show tables like '"+table2+"'";
-                rs= st.executeQuery(sql);
-                if(rs.next()){
-                    logger.info("table "+table2+" exists.");
+                {
+                    if (tableExists(st, table2,mysql)) {
+                        logger.info("table " + table2 + " exists.");
 
-                }else {
-                    File file= ResourceUtils.getFile("classpath:sql/task_cache.txt");
-                    String sql2=FileUtils.readFileToString(file,"UTF-8");
-                    sql2=sql2.replace("${tableName}",table2);
-                    st.execute(sql2);
-                    logger.info("created  table " + table2);
+                    } else {
+                        File file = ResourceUtils.getFile("classpath:sql/task_cache.txt");
+                        String sql2 = FileUtils.readFileToString(file, "UTF-8");
+                        sql2 = sql2.replace("${tableName}", table2);
+                        st.execute(sql2);
+                        logger.info("created  table " + table2);
+                    }
                 }
 
                 logger.info("crate end");

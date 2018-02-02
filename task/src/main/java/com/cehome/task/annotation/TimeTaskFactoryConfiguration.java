@@ -1,5 +1,6 @@
 package com.cehome.task.annotation;
 
+import com.cehome.task.Constants;
 import com.cehome.task.TimeTaskFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
@@ -18,9 +19,8 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class TimeTaskFactoryConfiguration {
 
-
-    private String driverClassName="com.mysql.jdbc.Driver";
-
+    @Value(Constants.CONFIG_DRIVER)
+    private String driverClassName;
 
     //@Value("${task.factory.createTable:false}")
     //private boolean createTable;

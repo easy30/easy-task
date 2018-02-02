@@ -238,8 +238,12 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
         this.serviceUrl=serviceUrl;
         if(timeTaskFactory.isClusterMode()){
 
-            timeTaskFactory.getConfigService().hset( timeTaskFactory.getName()+ MachineBaseService.KEY_MACHINES_URL+ timeTaskFactory.getAppName(),
-                    getLocalMachine(), serviceUrl );
+            try {
+                timeTaskFactory.getConfigService().hset(timeTaskFactory.getName() + MachineBaseService.KEY_MACHINES_URL + timeTaskFactory.getAppName(),
+                        getLocalMachine(), serviceUrl);
+            }catch (Exception e){
+                logger.error("can not registerServiceUrl",e);
+            }
 
         }
     }

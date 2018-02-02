@@ -31,6 +31,7 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 	protected TimeTaskClient timeTaskClient;
 
 
+	private int  APP_HEART_BEAT_SECONDS=3600;
 	public String getAppName() {
 		return appName;
 	}
@@ -60,7 +61,6 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 		//可能有多个context，会执行2次
 		if(inited) return;
 		logger.info("第一次执行，加入启动map中. host=" + timeTaskClient.getLocalMachine());
-		configService.sadd(getClusterName() +KEY_APPS,appName);
 		configService.hset(getClusterName() + KEY_MACHINES_START+appName, timeTaskClient.getLocalMachine(), "1");
 
 		/*if(timeTaskClient.isUseHostName()){
@@ -68,16 +68,26 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 		}*/
 
 		inited=true;
+
 		TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					schedule();
-				}catch (Exception e){
-					logger.error("heart bean error",e);
-				}
+
+				appHeartbeat();
+
+			}
+		}, 0,APP_HEART_BEAT_SECONDS*1000);
+
+
+		TimeTaskFactory.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+
+				machineHeartbeat();
+
 			}
 		}, 0,getClusterHeartBeatInterval());
+
 	}
     /**
      * 机器心跳
@@ -85,12 +95,27 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
      * @throws Exception
      */
 	//@Scheduled(fixedDelay = Constants.CLIENT_HEART_BEAT_INTERVAL)
-	public void schedule()   {
-
+	public void machineHeartbeat()   {
+		try {
 			logger.info("\r\n\r\n");
 			logger.info("发送心跳，更新在线机器列表");
 			configService.hset(getClusterName() + KEY_MACHINES + appName, timeTaskClient.getLocalMachine(), "" + configService.getTime());
 			configService.expire(getClusterName() + KEY_MACHINES + appName, 3600 * 24 * 7);
+		}catch (Exception e){
+			logger.error("heart bean error",e);
+		}
+
+	}
+
+	public void appHeartbeat()   {
+		try {
+			logger.info("\r\n\r\n");
+
+			configService.sadd  (getClusterName() +KEY_APPS, appName);
+			configService.expire(getClusterName() +KEY_APPS, APP_HEART_BEAT_SECONDS*3);
+		}catch (Exception e){
+			logger.error("app heartbeat error",e);
+		}
 
 	}
 

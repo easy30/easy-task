@@ -13,6 +13,8 @@ public class Constants {
     public final static String CLIENT_SERVICE_URL_GET_LOG_SIZE="timeTaskClientService/getLogSize.htm";
 
     public static String MACHINE_SPLIT="|";
+
+    public final static String CONFIG_DRIVER="${task.datasource.driverClassName:com.mysql.jdbc.Driver}";
     //public static String RMI_PORT="1189";
     //public static String TABLE = "time_task";
 
