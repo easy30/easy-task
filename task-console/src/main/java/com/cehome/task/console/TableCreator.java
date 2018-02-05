@@ -24,7 +24,7 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(TableCreator.class);
 
-    @Value("${task.h2.start:false}")
+    @Value("${task.h2.start:true}")
     private boolean h2Start;
 
     @Value("${task.h2.port:9092}")
@@ -99,9 +99,13 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
             Class.forName(driverClassName);
 
             if(!mysql && h2Start){
-                Server server=  Server.createTcpServer( "-tcpPort", h2Port, "-tcpAllowOthers").start();
+                try {
+                    Server server = Server.createTcpServer("-tcpPort", h2Port, "-tcpAllowOthers").start();
 
-                System.out.println("h2 server listen at "+server.getURL());
+                    System.out.println("h2 server listen at " + server.getURL());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
 

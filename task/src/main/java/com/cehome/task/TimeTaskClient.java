@@ -35,7 +35,7 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
     @Value("${task.log.path}")
     private String logPath;
 
-    @Value("${task.log.addAppNameToPath:true}")
+    @Value("${task.log.addAppNameToPath:false}")
     private boolean addAppNameToPath;
 
     @Value("${task.log.encoding:UTF-8}")
