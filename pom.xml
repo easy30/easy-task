@@ -6,8 +6,9 @@
     <artifactId>easy-task</artifactId>
     <packaging>pom</packaging>
     <name>task-parent</name>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.2</version>
     <url>https://github.com/cehome-com/easy-task</url>
+    <description>easy task scheduler</description>
     <properties>
         <spring-version>3.2.2.RELEASE</spring-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,24 +79,6 @@
         <url>https://github.com/cehome-com/easy-task</url>
     </scm>
 
-
-    <build>
-        <finalName>task</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
     <profiles>
         <profile>
             <id>oss</id>
@@ -111,6 +94,16 @@
             </distributionManagement>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.2</version>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
                     <!-- Source -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -168,6 +161,16 @@
             </activation>
             <build>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
             <!-- Source -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
