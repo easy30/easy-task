@@ -15,8 +15,7 @@ public class BootDemoPlugin extends TimeTaskPlugin {
     @Override
     public void run(TimeTaskContext context, JSONObject args) throws Exception {
         logger.info("plugin class name="+this);
-        logger.info("task id="+context.getId());
-        logger.info("task name="+context.getName());
+        logger.info("task id="+context.getId()+",name="+context.getName());
         logger.info("task run on ip="+ Inet4Address.getLocalHost().getHostAddress());
         logger.info("task run count="+context.getRunTimes());
     }
