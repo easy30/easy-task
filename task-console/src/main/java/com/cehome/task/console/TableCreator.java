@@ -4,6 +4,7 @@ import com.cehome.task.Constants;
 import com.cehome.task.util.IpAddressUtil;
 import jsharp.util.Common;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.*;
 
 
@@ -121,8 +123,11 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                         logger.info("table " + table1 + " exists.");
 
                     }else{
-                        File file = ResourceUtils.getFile("classpath:sql/"+(mysql?"task_mysql.txt":"task_h2.txt"));
-                        String sql1 = FileUtils.readFileToString(file,"UTF-8");
+                        //File file = ResourceUtils.getFile("sql/"+(mysql?"task_mysql.txt":"task_h2.txt"));
+                        InputStream is= this.getClass().getClassLoader().getResourceAsStream("sql/"+(mysql?"task_mysql.txt":"task_h2.txt"));
+                        String sql1=IOUtils.toString(is,"UTF-8");
+                        is.close();
+                        //String sql1 = FileUtils.readFileToString(file,"UTF-8");
                         sql1 = sql1.replace("${tableName}", table1);
 
                         sql1 = sql1.replace("${ip}", useHostName?IpAddressUtil.getLocalHostName(): IpAddressUtil.getLocalHostAddress());
@@ -139,8 +144,11 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                         logger.info("table " + table2 + " exists.");
 
                     } else {
-                        File file = ResourceUtils.getFile("classpath:sql/task_cache.txt");
-                        String sql2 = FileUtils.readFileToString(file, "UTF-8");
+                    	InputStream is= this.getClass().getClassLoader().getResourceAsStream("sql/task_cache.txt");
+                        String sql2=IOUtils.toString(is,"UTF-8");
+                        is.close();
+                        //File file = ResourceUtils.getFile("classpath:sql/task_cache.txt");
+                       // String sql2 = FileUtils.readFileToString(file, "UTF-8");
                         sql2 = sql2.replace("${tableName}", table2);
                         st.execute(sql2);
                         logger.info("created  table " + table2);
