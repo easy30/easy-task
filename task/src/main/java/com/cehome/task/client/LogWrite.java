@@ -101,14 +101,14 @@ public class LogWrite {
         for (String logPackage : logPackages.split(";")) {
             Logger logbackLogger = loggerContext.getLogger(logPackage);
             logbackLogger.setLevel(Level.INFO);
-            logbackLogger.setAdditive(true);
+            logbackLogger.setAdditive(false);
             logbackLogger.addAppender(siftingAppender);
         }
 
 
         Logger logbackLogger = loggerContext.getLogger(BASE_LOG_NAME);
         logbackLogger.setLevel(Level.INFO);
-        logbackLogger.setAdditive(true);
+        logbackLogger.setAdditive(false);
         logbackLogger.addAppender(siftingAppender);
 
 
