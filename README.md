@@ -14,7 +14,7 @@
 
 -  下载并启动
 
-1）方式一：到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.2/task-console.jar
+1）方式一：到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
 
   然后执行命令启动： java -jar task-console.jar
   
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.cehome</groupId>
             <artifactId>task</artifactId>
-            <version>2.0.2</version>
+            <version>2.0.3</version>
         </dependency>
 ```
 
@@ -177,7 +177,7 @@ public class BootDemoPlugin extends TimeTaskPlugin {
         <dependency>
             <groupId>com.cehome</groupId>
             <artifactId>task</artifactId>
-            <version>2.0.2</version>
+            <version>2.0.3</version>
         </dependency>
 ```
 
