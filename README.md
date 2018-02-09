@@ -6,41 +6,46 @@
 - 管理控制台统一对任务修改、启动、停止等。控制台挂掉不影响任务的执行。
 - 可以在线查看任务日志，实时了解任务执行情况。
 
+## 这个调度平台有什么优势呢？
+- 一般的任务调度系统，代码逻辑都是集成到调度系统里面的，需要把各个业务系统调度代码和依赖代码迁入调度系统，这是非常麻烦的一件事情。
+而Easy Task只是负责调度，复杂的代码逻辑还是在各自的业务系统开发和执行，保证了开发的效率，也避免了业务系统互相影响。
+- 可以在线按页查看所有任务的执行日志，任务执行再也不是一个黑匣子。
+
 
 ![架构图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/system.png)
 
-## 快速体验
-下载并启动一个控制台。控制台同时也是worker，也能执行任务，缺省会启动一个内置的demoPlugin任务。
+## 快速体验一
+ 如果你有若干个业务系统（作为worker）想接入任务调度平台，可以直接下载并启动一个控制台。
+ 控制台同时也是worker，也能执行任务，缺省会启动一个演示用的demoPlugin任务（而实际场景console只做管理，不做任务执行）。
 
 -  下载并启动
 
-1）方式一：到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
+到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
 
   然后执行命令启动： java -jar task-console.jar
   
-2） 方式二：直接剪出task-console spring boot代码模块，导入IDE中，执行com.cehome.task.console.TaskConsoleApplication启动。
-
-如果你想快速部署一套简单可用的调度系统，可以采用方式二，在task-console代码里面添加插件，并部署使用。
-
-如果你有多个应用，想接入调度平台，采用方式一，部署的console只做管理，不做任务执行。
 
 - 访问 http://localhost:8080 ，没有意外的话应该看到一个demo任务
 
 ![demo图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/main.png)
 
 - 点击“查看日志”按钮，可以看到任务执行日志（如果没有，可以停10秒再刷新一下）
-- 点击“修改”查看或修改任务配置。系统基于spring，Bean名称“demoPlugin"就是内置的一个spring bean。
-- 点击“停止”可以停止任务。
 
+  点击“修改”查看或修改任务配置。系统基于spring，Bean名称“demoPlugin"就是内置的一个spring bean。
+  
+  点击“停止”可以停止任务。
 
-注：
+-  业务系统接入参考下面 “spring boot”和“sring mvc”应用如何接入。 
 
-1）控制台缺省内置了一个H2数据库（端口9092）来保存任务配置。你也可以采用外部H2或mysql数据库。
-
-2）采用方式二剪出task-console代码模块，例子中的demoPlugin对应类为com.cehome.task.console.DemoPlugin，你可以直接修改此插件。
-
-## 模拟客户端应用（worker）接入调度平台
-实际使用中，console只是管理任务，不执行任务，任务是在客户端应用中执行的。下面模拟app1和app2两个应用接入调度平台。为了方便，还是用task-console.jar来模拟。执行前，先保证上面的console还在运行状态。
+## 快速体验二
+ 如果你只想快速部署一套简单可用的调度系统，不需要考虑现有业务系统，则直接利用task-console源代码开发。 
+ -  剪出task-console spring boot代码模块，导入IDE中，  执行com.cehome.task.console.TaskConsoleApplication启动。
+ - 访问 http://localhost:8080 
+ - 点击“查看日志”按钮查看内置demoPlugin任务的日志。
+ - 修改demoPlugin对应类com.cehome.task.console.DemoPlugin，重新部署并查看执行结果。
+ 
+## 模拟业务系统（worker）接入调度平台
+实际使用中，console只是管理任务，不执行任务，任务是在业务系统中执行的。下面模拟app1和app2两个业务系统接入调度平台。为了方便，还是用task-console.jar来模拟。执行前，先保证上面的console还在运行状态。
 
 - 启动另一个命令行窗口，执行如下命令启动app1（端口为8091）
 
