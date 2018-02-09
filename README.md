@@ -15,22 +15,24 @@
 ![架构图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/system.png)
 
 ## 快速体验一
- 如果你有若干个业务系统（作为worker）想接入任务调度平台，可以直接下载并启动一个控制台。
- 控制台同时也是worker，也能执行任务，缺省会启动一个演示用的demoPlugin任务（而实际场景console只做管理，不做任务执行）。
+   如果你有若干个业务系统（作为worker）想接入任务调度平台，可以直接下载并启动一个控制台。
+   控制台同时也是worker，也能执行任务，缺省会启动一个演示用的demoPlugin任务（而实际场景console只做管理，不做任务执行）。
 
 -  下载并启动
 
-到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
+   到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
 
-  然后执行命令启动： java -jar task-console.jar
+   然后执行命令启动： java -jar task-console.jar
   
 
-- 访问 http://localhost:8080 ，没有意外的话应该看到一个demo任务
+- 访问 http://localhost:8080 ，可以看到一个demo任务
 
 ![demo图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/main.png)
 
-- 点击“查看日志”按钮，可以看到任务执行日志（如果没有，可以停10秒再刷新一下）
+- 任务管理
+  点击“查看日志”按钮，可以看到任务执行日志（如果没有，可以停10秒再刷新一下）
 
+  ![log](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/log.png)
   点击“修改”查看或修改任务配置。系统基于spring，Bean名称“demoPlugin"就是内置的一个spring bean。
   
   点击“停止”可以停止任务。
@@ -38,8 +40,8 @@
 -  业务系统接入参考下面 “spring boot”和“sring mvc”应用如何接入。 
 
 ## 快速体验二
- 如果你只想快速部署一套简单可用的调度系统，不需要考虑现有业务系统，则直接利用task-console源代码开发。 
- -  剪出task-console spring boot代码模块，导入IDE中，  执行com.cehome.task.console.TaskConsoleApplication启动。
+   如果你只想快速部署一套简单可用的调度系统，不需要考虑现有业务系统，则直接利用task-console源代码开发。 
+ - 剪出task-console spring boot代码模块，导入IDE中，  执行com.cehome.task.console.TaskConsoleApplication启动。
  - 访问 http://localhost:8080 
  - 点击“查看日志”按钮查看内置demoPlugin任务的日志。
  - 修改demoPlugin对应类com.cehome.task.console.DemoPlugin，重新部署并查看执行结果。
