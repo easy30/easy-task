@@ -33,6 +33,7 @@
   点击“查看日志”按钮，可以看到任务执行日志（如果没有，可以停10秒再刷新一下）
 
   ![log](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/log.png)
+  
   点击“修改”查看或修改任务配置。系统基于spring，Bean名称“demoPlugin"就是内置的一个spring bean。
   
   点击“停止”可以停止任务。
@@ -58,7 +59,8 @@
 
 **java -jar task-console.jar --task.factory.appName=app2 --server.port=8092**
 
-- 访问http://localhost:8080 ，点击列表中demo的“修改”按钮，弹出修改界面，点击“应用”下拉框，应该能看到app1、app2也在里面，选择app2，然后保存并关闭。
+- 把任务切换到app2中执行。
+  访问http://localhost:8080 ，点击“修改”按钮，弹出修改界面，点击“应用”下拉框，应该能看到app1、app2也在里面，选择app2，然后保存并关闭。
 - 观察app2的命令行输出窗口，发现demo已经转移到在app2中执行了。
 
 ## 现有spring boot应用接入调度平台
