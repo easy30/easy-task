@@ -3,7 +3,6 @@ package com.cehome.task.console;
 import com.cehome.task.Constants;
 import com.cehome.task.util.IpAddressUtil;
 import jsharp.util.Common;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.InputStream;
 import java.sql.*;
 
@@ -40,7 +37,7 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
     private String appName;
 
     @Value("${task.factory.name}")
-    private String table1;
+    private String table;
 
     @Value("${task.fuseHostName:false}")
     private boolean useHostName;
@@ -90,13 +87,13 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
         Connection conn = null;
         Statement st = null;
-        ResultSet rs = null;
+        //ResultSet rs = null;
 
 
         try
         {
             boolean mysql=driverClassName.indexOf("mysql") >= 0;
-            String table2=table1+"_cache";
+            //String table2=table1+"_cache";
 
             Class.forName(driverClassName);
 
@@ -117,7 +114,11 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
             try {
                 logger.info("create begin");
                 st = conn.createStatement();
-                {
+                execute(st,mysql,mysql?"task_mysql.txt":"task_h2.txt",table);
+                execute(st,mysql,"task_cache.txt",table+"_cache");
+
+
+                /*{
 
                     if (tableExists(st,table1,mysql)) {
                         logger.info("table " + table1 + " exists.");
@@ -137,9 +138,9 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                     }
 
 
-                }
+                }*/
 
-                {
+               /* {
                     if (tableExists(st, table2,mysql)) {
                         logger.info("table " + table2 + " exists.");
 
@@ -153,7 +154,7 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
                         st.execute(sql2);
                         logger.info("created  table " + table2);
                     }
-                }
+                }*/
 
                 logger.info("crate end");
             }finally {
@@ -169,10 +170,30 @@ public class TableCreator implements InitializingBean,BeanPostProcessor {
 
         finally
         {
-            Common.closeObjects(rs,st,conn);
+            Common.closeObjects(st,conn);
 
         }
 
+
+    }
+
+    private void execute( Statement st,boolean mysql,String sqlFile,String table) throws Exception {
+        if (tableExists(st,table,mysql)) {
+            logger.info("table " + table + " exists.");
+
+        }else{
+            //File file = ResourceUtils.getFile("sql/"+(mysql?"task_mysql.txt":"task_h2.txt"));
+            InputStream is= this.getClass().getClassLoader().getResourceAsStream("sql/"+sqlFile);
+            String sql1=IOUtils.toString(is,"UTF-8");
+            is.close();
+            //String sql1 = FileUtils.readFileToString(file,"UTF-8");
+            sql1 = sql1.replace("${tableName}", table);
+
+            sql1 = sql1.replace("${ip}", useHostName?IpAddressUtil.getLocalHostName(): IpAddressUtil.getLocalHostAddress());
+            sql1 = sql1.replace("${appName}", appName);
+            st.execute(sql1);
+            logger.info("created  table " + table);
+        }
 
     }
 

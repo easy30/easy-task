@@ -3,5 +3,6 @@
 <#--<#if (request.getContextPath()!="")><#assign ctx=request.getContextPath()></#if>-->
 
 <#assign ctx=request.getContextPath()>
+<#assign language=Request.language>
 <#assign timestamp='20160112401' />
 <#assign updateDate='20160112401' />

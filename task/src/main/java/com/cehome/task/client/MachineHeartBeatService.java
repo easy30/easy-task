@@ -60,7 +60,7 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 	public void afterPropertiesSet() throws Exception {
 		//可能有多个context，会执行2次
 		if(inited) return;
-		logger.info("第一次执行，加入启动map中. host=" + timeTaskClient.getLocalMachine());
+		logger.info("first run，add to start map. host=" + timeTaskClient.getLocalMachine());
 		configService.hset(getClusterName() + KEY_MACHINES_START+appName, timeTaskClient.getLocalMachine(), "1");
 
 		/*if(timeTaskClient.isUseHostName()){
@@ -98,7 +98,7 @@ public class MachineHeartBeatService extends MachineBaseService implements Initi
 	public void machineHeartbeat()   {
 		try {
 			logger.info("\r\n\r\n");
-			logger.info("发送心跳，更新在线机器列表");
+			logger.info("send heart, update online machine");
 			configService.hset(getClusterName() + KEY_MACHINES + appName, timeTaskClient.getLocalMachine(), "" + configService.getTime());
 			configService.expire(getClusterName() + KEY_MACHINES + appName, 3600 * 24 * 7);
 		}catch (Exception e){

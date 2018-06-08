@@ -70,10 +70,14 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
     protected  String localHostName;
     ConfigService configService;
     ApplicationContext applicationContext;
+    private SessionFactory sessionFactory;
     public ConfigService getConfigService() {
         return configService;
     }
 
+    public SessionFactory getSessionFactory(){
+        return sessionFactory;
+    }
 
     protected SessionFactory createSessionFactory(){
         SessionFactory sessionFactory=new ObjectSessionFactory();
@@ -86,7 +90,7 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
         beanAnn.setTable(getName());
         TimeTaskDao timeTaskDao=new TimeTaskDao();
         timeTaskDao.setTableName(getName());
-        timeTaskDao.setSessionFactory(createSessionFactory());
+        timeTaskDao.setSessionFactory(getSessionFactory());
         return timeTaskDao;
     }
     protected TimeTaskCacheDao createTimeTaskCacheDao(){
@@ -95,7 +99,7 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
         beanAnn.setTable(tableName);
         TimeTaskCacheDao timeTaskCacheDao=new TimeTaskCacheDao();
         timeTaskCacheDao.setTableName(tableName);
-        timeTaskCacheDao.setSessionFactory(createSessionFactory());
+        timeTaskCacheDao.setSessionFactory(getSessionFactory());
         return timeTaskCacheDao;
     }
 
@@ -121,6 +125,7 @@ public  class TimeTaskFactory implements ApplicationContextAware, InitializingBe
 
         DefaultListableBeanFactory factory=(DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
 
+        sessionFactory=createSessionFactory();
         factory.registerSingleton("timeTaskDao",createTimeTaskDao());
 
         if(isClusterMode()) {

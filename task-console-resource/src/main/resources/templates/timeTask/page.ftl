@@ -3,27 +3,27 @@
 <div style="margin: 4px">
 <#include "page2.ftl">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button type="button" class="btn btn-primary btn-xs" onclick="edit('edit.htm',0)"><span
-            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+    <button type="button" class="btn btn-primary btn-xs" onclick="edit(0)"><span
+            class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span lang-key="add">add</span>
     </button>
     <#--<#if   (RequestParameters.taskType!"0")=="0">-->
     <button type="button" class="btn btn-danger btn-xs" onclick="doBatch('delete.htm?')"><span
-            class="glyphicon glyphicon-minus" aria-hidden="true"></span> 删除
+            class="glyphicon glyphicon-minus" aria-hidden="true"></span> <span lang-key="delete">delete</span>
     </button>
     <#--</#if>-->
 
     &nbsp;&nbsp;&nbsp;
     <div class="btn-group">
         <button class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-            导入导出<span class="caret"></span>
+            <span lang-key="importOrExport">importOrExport</span><span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" style="min-width:50px;">
 
-            <li><a href="#"   onclick="doBatch('exportTasks.htm?',null,true)">导出到文件</a></li>
+            <li><a href="#"   onclick="doBatch('exportTasks.htm?',null,true)" lang-key="exportToFile">exportToFile</a></li>
             <li>
                 <a href="#">
                     <span class="fileinput-button">
-                    <span>从文件导入</span>
+                    <span lang-key="importFromFile">importFromFile</span>
                     <input type="file" id="file1" name="file1" onchange="ajaxFileUpload()">
                     </span>
                 </a>
@@ -34,10 +34,10 @@
 
     &nbsp;&nbsp;&nbsp;
     <button type="button" class="btn btn-primary btn-xs" onclick="doStatus(this,0,null)"><span
-            class="glyphicon glyphicon-play" aria-hidden="true"></span> 启动
+            class="glyphicon glyphicon-play" aria-hidden="true"></span> <span lang-key="start">start</span>
     </button>
     <button type="button" class="btn btn-primary btn-xs" onclick="doStatus(this,1,null)"><span
-            class="glyphicon glyphicon-stop" aria-hidden="true"></span> 停止
+            class="glyphicon glyphicon-stop" aria-hidden="true"></span> <span lang-key="stop">stop</span>
     </button>
     &nbsp;&nbsp;&nbsp;
 
@@ -52,7 +52,7 @@
         </ul>
     </div>
     <button type="button" class="btn btn-primary btn-xs" onclick="doSwitchIp($('#switchTargetIp',this.parentNode))"><span
-            class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>切换IP
+            class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> <span lang-key="switchIP">switchIP</span>
     </button>
 
 </div>

@@ -340,10 +340,20 @@ public class TimeTaskController implements ApplicationContextAware {
             timeTask.setCreateUser(globalService.getLoginUsername(request));
         }
 
+		beforeSave(timeTask,request);
 		timeTaskService.save(timeTask);
+		afterSave(timeTask,request);
 
 
         return ""+timeTask.getId();
+
+	}
+
+	protected void beforeSave(TimeTask timeTask,HttpServletRequest request){
+
+	}
+
+	protected void afterSave(TimeTask timeTask,HttpServletRequest request){
 
 	}
 

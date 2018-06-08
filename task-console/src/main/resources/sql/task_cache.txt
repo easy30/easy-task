@@ -6,8 +6,8 @@ CREATE TABLE `${tableName}` (
   `dataType` int(11) DEFAULT '0',
   `expire` datetime DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
-  `create_time` datetime NOT NULL COMMENT '本记录创建时间',
-  `update_time` datetime NOT NULL COMMENT '本记录修改时间',
+  `create_time` datetime NOT NULL COMMENT '',
+  `update_time` datetime NOT NULL COMMENT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `keys` (`main_key`,`sub_key`)
+  UNIQUE KEY `${tableName}_keys` (`main_key`,`sub_key`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

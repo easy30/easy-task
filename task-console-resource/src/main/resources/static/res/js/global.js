@@ -1,3 +1,4 @@
 $(document).ready(function () {
-    hideTableCols(600);
+    //hideTableCols(600);
+
 })

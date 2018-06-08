@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class TimeTaskContext extends HashMap {
     private TimeTask timeTask;
     private long runTimes;
-    private boolean running;
+    private volatile boolean running;
     public long getRunTimes() {
         return runTimes;
     }
@@ -46,5 +46,16 @@ public class TimeTaskContext extends HashMap {
 
      void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public void sleep(long ms){
+        int n=0;
+        while (isRunning() && n<ms) {
+            try {
+                Thread.sleep(200);
+                n+=200;
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }

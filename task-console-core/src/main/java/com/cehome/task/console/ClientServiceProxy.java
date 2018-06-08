@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class ClientServiceProxy implements ClientService {
     private static String encoding="UTF-8";
+    private static int timeout=5000;
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -45,5 +46,14 @@ public class ClientServiceProxy implements ClientService {
     }
 
 
+    @Override
+    public String httpPost( Map<String,String> params, String path) throws Exception {
+        return HttpUtil.httpPost(getBaseUrl()+path,params,encoding);
+    }
+
+    @Override
+    public String httpGet( String path) throws Exception {
+        return HttpUtil.httpGet(getBaseUrl()+path,encoding,timeout);
+    }
 
 }

@@ -1,5 +1,5 @@
 <#ftl encoding="utf-8">
-<#include "constants.ftl">
+<#include "../include/constants.ftl">
 <#setting classic_compatible=true >
 <input type="hidden" name="id" value="${entity.id }"/>
 <input type="hidden" name="taskType" value="${entity.taskType}"/>
@@ -7,11 +7,11 @@
 <table class="" width="100%" border="0" align="center">
 
         <tr>
-            <td>任务ID：</td>
+            <td ><span lang-key="taskId"></span>:</td>
             <td>
                     ${entity.id}
             </td>
-            <td>*应用：</td>
+            <td><span style="color:red">*</span><span lang-key="application"></span>：</td>
             <td>
                 <select name="appName" id="appName" class="form-control input-xs" onchange="onAppChange(this)" data-rule-required="true">
                     <option value=""></option>
@@ -25,10 +25,10 @@
         </tr>
 
     <tr>
-        <td><span color="red">*</span>任务名称：</td>
+        <td><span style="color:red">*</span><span lang-key="taskName"></span>：</td>
         <td><input type="text" class="form-control input-xs" style="margin: 3px" id="name" name="name" value="${entity.name!}"
                    data-rule-required="true"/></td>
-        <td>*服务器：</td>
+        <td><span style="color:red">*</span><span lang-key="server"></span>：</td>
         <td>
 
             <div class="btn-group">
@@ -42,9 +42,9 @@
                     </#list>
                 </ul>
             </div>
-
+<#--
             <div class="btn-group" style=" display: none">
-                <span color="red">*</span>所属计划：
+                <span style="color:red">*</span><span lang-key="plan"></span>：
                 <input type="text" class="form-control input-xs" style="margin: 3px;" id="scheduler" name="scheduler"
                        data-toggle="dropdown" aria-expanded="false" value="default" data-rule-required="true"/>
                 <ul class="dropdown-menu" style="overflow: auto; max-height: 300px" role="menu">
@@ -52,17 +52,17 @@
                         <li><a href="#" onclick="edit_form.scheduler.value=this.innerText">${item}</a></li>
                     </#list>
                 </ul>
-            </div>
+            </div>-->
         </td>
     </tr>
 
     <tr>
 
 
-        <td><span color="red">*</span>计划时间：</td>
+        <td><span style="color:red">*</span><span lang-key="schedule"></span>：</td>
         <td><input type="text" class="form-control input-xs" style="margin: 3px" id="cron" name="cron"
                    value="${entity.cron}" data-rule-required="true"/></td>
-        <td><span color="red">*</span>${areaCustom.categoryNames[0]}：</td>
+        <td><span style="color:red">*</span><span lang-key="group"></span>：</td>
         <td>
             <div class="btn-group">
                 <input type="text" class="form-control input-xs" style="margin: 3px" id="cat1" name="cat1" autocomplete="off"
@@ -94,7 +94,7 @@
 
   <#if (fixed==0)>
         <tr>
-            <td>Bean名称：</td>
+            <td>Bean <span lang-key="name"></span>：</td>
             <td>
                 <div class="btn-group">
                     <input type="text" class="form-control input-xs" style="margin: 3px" id="bean" name="bean"
@@ -108,24 +108,24 @@
                 </div>
 
             </td>
-            <td>Bean方法：</td>
+            <td>Bean <span lang-key="method"></span>：</td>
             <td><input type="text" class="form-control input-xs" style="margin: 3px" id="method" name="method"
                        value="${invoker.method}" /></td>
         </tr>
         <tr>
-            <td>Bean参数：</td>
+            <td>Bean <span lang-key="args"></span>：</td>
             <td colspan="3"><textarea name="args" class="form-control input-xs" style="width: 97%"
                                       rows="5">${invoker.args}</textarea></td>
         </tr>
         <tr>
-            <td>中断方法：</td>
+            <td><span lang-key="breakMethod"></span>：</td>
             <td><input type="text" class="form-control input-xs" style="margin: 3px" id="stopMethod" name="stopMethod"
                        value="${invoker.stopMethod}"/></td>
         </tr>
     </#if>
 
       <tr>
-          <td>自定义配置：</td>
+          <td><span lang-key="customConfig"></span>：</td>
           <td colspan="3"><textarea name="taskConfig" class="form-control input-xs" style="width: 97%"
                                     rows="6">${entity.taskConfig}</textarea>
           </td>

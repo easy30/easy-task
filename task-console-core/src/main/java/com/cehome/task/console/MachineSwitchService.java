@@ -66,14 +66,14 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 	public void schedule()  {
 		logger.info("\r\n\r\n");
 		// 注：监控处理：本部分逻辑其实最好让另一个应用（两台机器就行）执行比较稳妥;同一个应用可能会在处理过程中机器发布重启。
-		logger.info("处理机器列表前尝试进行加锁");
+		logger.info("try to lock before get machine list");
 		if (configService.simpleLock(getClusterName() + KEY_LOCK, 60)) {
 			try {
-				logger.info("加锁成功，准备获取机器列表");
+				logger.info("lock successfully , try to get machine list");
 
 				Set<String> appNames= configService.smembers(getClusterName()  +KEY_APPS);
 				for(String appName:appNames){
-					logger.info("处理应用"+appName);
+					logger.info("do with app "+appName);
 					doWithApp(appName);
 				}
 
@@ -82,7 +82,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 			}
 
 		} else {
-			logger.info("加锁失败");
+			logger.info("lock fail");
 		}
 	}
 	private void doWithApp(String appName){
@@ -110,9 +110,9 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 				}
 
 			}
-			logger.info("在线机器数 online size=" + onlines.size() + ","
+			logger.info("online machine count=" + onlines.size() + ","
 					+ StringUtils.substring(JSON.toJSONString(onlines), 0, 100) + "...");
-			logger.info("离线转移处理。离线机器数 moveip size=" + offlines.size() + "," + JSON.toJSONString(offlines),
+			logger.info("offline machine , need to remove. moveip size=" + offlines.size() + "," + JSON.toJSONString(offlines),
 					0, 100);
 			if (onlines.size() == 0) {
 				logger.error("no online machines !!!");
@@ -125,7 +125,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 				}
 			}
 
-			logger.info(connecteds.size()==0?"没有需要还原的机器":"需要还原刚上线的机器数=" + connecteds.size());
+			logger.info(connecteds.size()==0?"No machines need to recover":"just online and need to recover count=" + connecteds.size());
 			for (String machine : connecteds) {
 				recoverIP(appName,machine);
 				configService.hdel( getClusterName()  + KEY_MACHINES_START+appName, machine);
@@ -146,11 +146,11 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 		//String port = DefaultConfigClient.isDev() && getLocalMachine().equals(ipInfo) ? "8080" : "7001";
 		//String url = "http://" + ipInfo + ":" + port + "/checkpreload.htm";
 
-		logger.info("准备迁移机器" + ipInfo);
+		logger.info("begin to switch machine " + ipInfo);
 		String[] info= extractMachine(ipInfo);
 		List<String> machines=filterMachines(info[0],onlines);
 		if(machines.size()==0){
-			logger.warn("当前环境没有合适机器");
+			logger.warn("no machine need to switch");
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 			clientServiceProxy.setBaseUrl(url);
 			String response =clientServiceProxy.status(null);
 			if ("0".equals(response)) {
-				logger.info("服务器链接" + url + "... 检测连接正常，将忽略此次迁移");
+				logger.info("maichine url " + url + "... check ok，then ignore switch");
 				return false;
 			} else {
 				logger.info("Connect to " + url + "... response fail :" + response);
@@ -170,7 +170,7 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 		}
 
 		List<TimeTask> list = timeTaskDao.listByIp(appName,ipInfo);
-		logger.info("需要转移迁移任务数" + list.size());
+		logger.info("task count need to switch: " + list.size());
 		int i = 0;
 		for (TimeTask timeTask : list) {
 			timeTask.setTargetIp(machines.get(i++));
@@ -188,10 +188,10 @@ public class MachineSwitchService extends MachineBaseService implements Initiali
 	private boolean recoverIP(String appName,String machine) {
 		//日常关闭此功能
 		//if(!DefaultConfigClient.isPro()) return true;
-		logger.info("准备恢复机器" + machine);
+		logger.info("begin to recover machine " + machine);
 		//String[] info=ipInfo.split(",");
 		List<TimeTask> list = timeTaskDao.listByLastIp(appName,machine);
-		logger.info("需要恢复的任务数" + list.size());
+		logger.info("task count need to switch" + list.size());
 		for (TimeTask timeTask : list) {
 			timeTask.setTargetIp( machine);
 			timeTask.setLastTargetIp("");

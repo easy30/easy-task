@@ -1,5 +1,5 @@
 <#ftl encoding="utf-8">
-<#include "constants.ftl">
+<#include "../include/constants.ftl">
 <form id="searchForm" name="searchForm" class="form-inline" method="get" action="list.htm">
     <input type="hidden" name="taskType" value="${taskType}">
 
@@ -75,14 +75,14 @@
                     <div style="margin-top:8px">查询项：</div>
                 </td>-->
                 <td>
-                    <span style="margin-left:5px">分&nbsp;&nbsp; 组</span>
+                    <span style="margin-left:5px" lang-key="group">group</span>
                     <input type="text" class="form-control input-xs" style="height:25px;width: 100px" name="cat1" value="${cat1}"/>
 
-                    <span style="margin-left:5px">任务ID</span>
+                    <span style="margin-left:5px"  lang-key="taskId">taskId</span>
                     <input type="text" class="form-control input-xs" style="height:25px;width:80px" name="timeTaskId"
                            value="${timeTaskId!}"/>
 
-                    <span style="margin-left:5px">应用</span>
+                    <span style="margin-left:5px"  lang-key="application">application</span>
                     <select id="appName" name="appName" class="form-control input-xs" style="height:25px"
                     onchange="onSearchAppChange(this)">
                         <option></option>
@@ -91,7 +91,7 @@
                         </#list>
                     </select>
 
-                    <span style="margin-left:5px">服务器</span>
+                    <span style="margin-left:5px"  lang-key="server">server</span>
                     <select id="searchTargetIp" name="targetIp" class="form-control input-xs" style="height:25px">
                         <option></option>
                         <#list  machines as item>
@@ -106,26 +106,26 @@
         <tr>
 
             <td>
-                <span style="margin-left:5px">关键词</span>
+                <span style="margin-left:5px" lang-key="keyword">keyword</span>
                 <input type="text" class="form-control input-xs" style="height:25px;width: 100px" name="words" value="${words}"/>
 
-                <span style="margin-left:5px">创建者</span>
+                <span style="margin-left:5px" lang-key="creator">creator</span>
                 <input type="text" class="form-control input-xs" style="height:25px;width:80px" name="createUser"
                        value="${createUser!}"/>
 
-                <span style="margin-left:5px">状态</span>
+                <span style="margin-left:5px" lang-key="status">status</span>
                 <select id="status" name="status" class="form-control input-xs" style="height:25px">
-                    <option value="-1"></option>
-                    <option value="1">运行</option>
-                    <option value="0">停止</option>
-                    <option value="2">删除</option>
+                    <option value="-1" ></option>
+                    <option value="1"  lang-key="run">run</option>
+                    <option value="0" lang-key="stop">stop</option>
+                    <option value="2" lang-key="delete">delete</option>
                 </select>
 
 
-                <input style="margin-left:5px;width:60px" type="submit" value="查询" class="btn btn-primary btn-xs"
-                       style="height:25px">
+                <button style="margin-left:5px;width:60px" type="submit"  class="btn btn-primary btn-xs"
+                        style="height:25px" lang-key="search">search</button>
                 <a href="list.htm?taskType=${RequestParameters.taskType!"0"}" style="margin-left:25px" class="btn btn-default btn-xs"
-                   style="height:25px">重置</a>
+                   style="height:25px" lang-key="reset">reset</a>
 
 
             </td>

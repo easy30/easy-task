@@ -12,13 +12,13 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <div style="margin-top:8px;align-content: center">
+                    <div style="align-content: center">
                         <a href="${ctx}/"><img  src="${ctx}/res/img/logo.png">
-                        <span style="vertical-align: middle;color:#f0ad4e;margin-left:5px;font-size:18px;font-weight:bold">Easy Task</span></div>
-                    </a>
+                            <span style="vertical-align: middle;color:#f0ad4e;margin-left:5px;font-size:18px;font-weight:bold">Easy Task</span></a>
+                    </div>
                 </li>
 
-                <li><a href="javascript:alert('easy task console')">关于</a></li>
+                <li><a href="javascript:alert('easy task console')" lang-key="about"></a></li>
 
             </ul>
         </div><!--/.nav-collapse -->

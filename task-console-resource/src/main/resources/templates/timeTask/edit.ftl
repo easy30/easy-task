@@ -30,7 +30,7 @@
 												"alert-success").addClass(
 												"alert-danger");
 									$("#task_save_result").html(
-                                            (success ? "保存成功!": text)+" ["+new Date().toLocaleString()+"]");
+                                            (success ? $lg("saveSuccess"): text)+" ["+new Date().toLocaleString()+"]");
 									$("#task_save_result").show();
 
 								});

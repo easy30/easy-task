@@ -12,7 +12,7 @@
         <div id="menu-navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <div style="margin-top:8px;align-content: center">
+                    <div style="align-content: center">
                         <a href="${ctx}"><img  src="${ctx}/res/img/logo.png"></a>
                         <span style="vertical-align: middle;color:#f0ad4e;margin-left:5px;font-size:18px;font-weight:bold">Easy Task</span></div>
                 </li>

@@ -168,7 +168,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
 
                 MDC.put("shard", "task/"+id);
                // context.put("timeTaskId", Long.parseLong(id));
-                logger.info("准备执行任务 {} ",id);
+                logger.info("prepare to run task {} ",id);
                // String config = context.getJobDetail().getJobDataMap().getString("config");
                 BeanConfig beanConfig = TimeTaskUtil.getJSON(timeTask.getConfig(), BeanConfig.class);
                 String beanName=beanConfig.getBean();
@@ -207,10 +207,10 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                // String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
                // System.out.println("Now Time : " + time);
             }catch (Throwable t){
-                    logger.error("任务 " + id + " 执行任务发生异常",t);
+                    logger.error("task " + id + " run with exception",t);
             }finally {
                 if(!isRunning(this) ) {
-                    logger.info("停止执行任务 {} ", id);
+                    logger.info("stop running task {} ", id);
                 }else {
                     schedulerNextFire(this);
                 }
@@ -283,10 +283,10 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
 
                                 if(!sameTask(taskRunnable.getTimeTask(),timeTask)){
                                     stopTask(timeTask.getId());
-                                    logger.info("定时任务" + timeTask.getId() + "配置改动，先停止");
+                                    logger.info("Task " + timeTask.getId() + "config changed，stop first");
                                     startTask(timeTask);
 
-                                    logger.info("定时任务 " + timeTask.getId() + " 启动");
+                                    logger.info("Task " + timeTask.getId() + " startup");
                                 }else{
                                     logger.info("task has run, no change for {} ",timeTask.getId());
                                 }
@@ -296,13 +296,13 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
 
                             startTask(timeTask);
 
-                            logger.info("定时任务 " + timeTask.getId() + " 启动");
+                            logger.info("Task " + timeTask.getId() + " startup");
                         }
                     } else { // 需要停止
                         if (isRunning(taskRunnable )) {
                             stopTask(timeTask.getId());
 
-                            logger.info("定时任务 " + timeTask.getId() + " 停止：时间程序开关状态为" + timeTask.getStatus() + " 配置IP["
+                            logger.info("Task " + timeTask.getId() + " need to stop, current status: " + timeTask.getStatus() + " config IP["
                                     + timeTask.getTargetIp() + "]");
                         }
                     }
@@ -322,7 +322,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
             }
         }
         if (changeCount > 0)
-            logger.info("IP匹配的任务数为：" + matchCount + ",其中可以执行的任务数为：" + runCount);
+            logger.info("match by IP --> task count：" + matchCount + ", active count：" + runCount);
         if(lastLoadTime.compareTo(maxDate)==0){
             lastLoadTimeCount++;
 
@@ -399,9 +399,9 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                 return;
             }
 
+                runnable.getTimeTaskContext().setRunning(false);
                 runStopMethod(runnable);
                 TimeTask timeTask = runnable.getTimeTask();
-                runnable.getTimeTaskContext().setRunning(false);
                 ScheduledFuture sf = runnable.getScheduledFuture();
                 if (sf.isDone() || sf.isCancelled()) {
                     return;
@@ -435,7 +435,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                             Method method = bean.getClass().getMethod(stopMethod2, TimeTaskContext.class);
                             method.invoke(bean, runnable.getTimeTaskContext());
                         } catch (Exception e) {
-                            logger.error("执行停止方法出错. " + stopMethod2 + "(TimeTaskContext timeTaskContext)", e);
+                            logger.error("invoke stop method error. " + stopMethod2 + "(TimeTaskContext timeTaskContext)", e);
                         } finally {
                             MDC.remove("shard");
                         }
@@ -448,13 +448,13 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                 try {
                     future.get(5000, TimeUnit.MILLISECONDS); // 取得结果，同时设置超时执行时间为5秒。同样可以用future.get()，不设置执行超时时间取得结果
                 } catch (Exception e) {
-                    logger.error("等待停止方法出错", e);
+                    logger.error("wait for stop method error", e);
                     future.cancel(true);
                 } finally {
                 }
             }
         }catch (Exception e){
-            logger.error("执行停止方法发生异常.", e);
+            logger.error("handle stop method error.", e);
         }
 
     }

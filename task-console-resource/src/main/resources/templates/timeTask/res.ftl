@@ -8,6 +8,5 @@
 <script src="${ctx}/res/timeTask/js/Common.js"></script>
 <script src="${ctx}/res/timeTask/js/custom.js"></script>
 <script src="${ctx}/res/timeTask/My97DatePicker/WdatePicker.js"></script>
-<script src="${ctx}/res/timeTask/js/global.js"></script>
 
 

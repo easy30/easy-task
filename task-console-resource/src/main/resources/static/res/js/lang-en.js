@@ -1,0 +1,62 @@
+function lang_text() {/*
+server=Server
+plan=Plan
+uploadError=Upload error
+copy=Copy
+add=Add
+modify=Modify
+error=error
+continueConfirm=continue to do ?
+selectOne=Please select one!
+chooseServer=Please choose a server
+success=Success
+fail=Fail
+runResult=execute result
+taskId=ID
+taskName=Task Name
+modifyTime=Modfied Time
+operator=Operator
+high=High
+start=Start
+stop=Stop
+stopRed=<font color='red'>Stop</font>
+runGreen=<font color='green'>Run</font>
+delete=Delete
+browseData=Browse
+viewLog=Log
+status=Status
+operation=Operation
+modifyInfo=Modify
+save=Save
+saveSuccess=Save success
+importOrExport=Import or export
+
+group=Group
+application=Application
+keyword=Keyword
+creator=Creator
+run=Run
+search=Search
+reset=Reset
+page=Page
+total=Total
+firstPage=First
+prevPage=Prev
+nextPage=Next
+lastPage=Last
+exportToFile=Export To File
+importFromFile=Import From File
+switchIP=Switch IP
+close=Close
+copyright=Copyright - Easy Task
+about=About
+pageSize=Page Size
+totalSize=Total Size
+setting=Setting
+schedule=Schedule
+name=Name
+method=Method
+args=Args
+breakMethod=Break Method
+customConfig=Custom Config
+*/}

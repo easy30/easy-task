@@ -24,12 +24,21 @@
     <script>
         var ctx="${(ctx)}";
     </script>
+
+
     <script src="${ctx}/res/js/jquery-1.9.1.min.js?${updateDate}"></script>
     <script src="${ctx}/res/js/jquery-ui-1.10.3.custom.js?${updateDate}"></script>
+
+    <script src="${ctx}/res/js/lang-${language}.js" type="text/javascript" ></script>
+    <script src="${ctx}/res/js/lang-${language}2.js" type="text/javascript" ></script>
+    <script src="${ctx}/res/js/lang.js" type="text/javascript" ></script>
+    <script src="${ctx}/res/js/global.js"></script>
+
     <script src="${ctx}/res/js/zh-cn.js" type="text/javascript" ></script>
-    <script src="${ctx}/res/js/calendar.js" type="text/javascript" ></script>
+    <script src="${ctx}/res/js/vue.min.js" type="text/javascript" ></script>
+    <#--<script src="${ctx}/res/js/calendar.js" type="text/javascript" ></script>-->
     <#--<script src="${ctx}/res/js/util.js?${updateDate}"></script>-->
-    <script src="${ctx}/res/js/lib/angular-1.2.16.js" type="text/javascript" ></script>
+    <#--<script src="${ctx}/res/js/lib/angular-1.2.16.js" type="text/javascript" ></script>-->
 
     <style>
         .navbar-inverse {

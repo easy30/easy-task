@@ -1,5 +1,5 @@
 <#ftl encoding="utf-8">
-<#include "constants.ftl">
+<#include "../include/constants.ftl">
 <table class="table"><tr><td><b>${timeTask.name}</b></td></tr></table>
 <table class="table"><tr><td>最新监控结果：<a href="getLastTaskResult.htm?id=${timeTaskId}">${lastTaskResult}</a></td></tr></table>
 <table class="table"><tr><td>当前查看的监控结果 - ${taskResult}
