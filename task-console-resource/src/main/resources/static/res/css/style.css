@@ -163,3 +163,10 @@ header h1 {
 }
 
 
+.ask{
+    background: url("../img/question.png") no-repeat;
+    padding-left: 15px;
+    display: block;
+}
+
+

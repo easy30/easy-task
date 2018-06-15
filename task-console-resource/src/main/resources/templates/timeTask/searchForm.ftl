@@ -1,10 +1,11 @@
 <#ftl encoding="utf-8">
 <#include "../include/constants.ftl">
-<form id="searchForm" name="searchForm" class="form-inline" method="get" action="list.htm">
+<form id="searchForm" name="searchForm" class="form-inline" method="get" action="">
     <input type="hidden" name="taskType" value="${taskType}">
 
     <input type="hidden" name="cat4" value="${cat4}">
-    <table class="table table-condensed" style="margin-bottom: 0px;">
+    <#--<table class="table table-condensed" style="margin-bottom: 0px;">-->
+
         <#--<#if  admin==0>
             <tr>
                 <td style="width:80px">${areaCustom.categoryNames[0]}：</td>
@@ -70,18 +71,23 @@
             </#if>
         </#if>-->
 
-            <tr>
+
               <#--  <td>
                     <div style="margin-top:8px">查询项：</div>
                 </td>-->
-                <td>
+
+                    <span id="fGroup" style="display: inline-block">
                     <span style="margin-left:5px" lang-key="group">group</span>
                     <input type="text" class="form-control input-xs" style="height:25px;width: 100px" name="cat1" value="${cat1}"/>
+                    </span>
 
+                    <span id="fTimeTaskId" style="display: inline-block">
                     <span style="margin-left:5px"  lang-key="taskId">taskId</span>
                     <input type="text" class="form-control input-xs" style="height:25px;width:80px" name="timeTaskId"
                            value="${timeTaskId!}"/>
+                     </span>
 
+                    <span id="fApplication" style="display: inline-block">
                     <span style="margin-left:5px"  lang-key="application">application</span>
                     <select id="appName" name="appName" class="form-control input-xs" style="height:25px"
                     onchange="onSearchAppChange(this)">
@@ -90,7 +96,9 @@
                             <option value="${item}">${item}</option>
                         </#list>
                     </select>
+                    </span>
 
+                    <span id="fServer" style="display: inline-block">
                     <span style="margin-left:5px"  lang-key="server">server</span>
                     <select id="searchTargetIp" name="targetIp" class="form-control input-xs" style="height:25px">
                         <option></option>
@@ -98,21 +106,21 @@
                             <option value="${item}">${item}</option>
                         </#list>
                     </select>
-
-                </td>
-            </tr>
+                     </span>
 
 
-        <tr>
-
-            <td>
+                <span id="fKeyword" style="display: inline-block">
                 <span style="margin-left:5px" lang-key="keyword">keyword</span>
                 <input type="text" class="form-control input-xs" style="height:25px;width: 100px" name="words" value="${words}"/>
+                </span>
 
+                <span id="fCreator" style="display: inline-block">
                 <span style="margin-left:5px" lang-key="creator">creator</span>
                 <input type="text" class="form-control input-xs" style="height:25px;width:80px" name="createUser"
                        value="${createUser!}"/>
+                 </span>
 
+                <span id="fStatus" style="display: inline-block">
                 <span style="margin-left:5px" lang-key="status">status</span>
                 <select id="status" name="status" class="form-control input-xs" style="height:25px">
                     <option value="-1" ></option>
@@ -120,17 +128,16 @@
                     <option value="0" lang-key="stop">stop</option>
                     <option value="2" lang-key="delete">delete</option>
                 </select>
+                </span>
 
-
+                <span id="fStatus" style="display: inline-block">
                 <button style="margin-left:5px;width:60px" type="submit"  class="btn btn-primary btn-xs"
                         style="height:25px" lang-key="search">search</button>
                 <a href="list.htm?taskType=${RequestParameters.taskType!"0"}" style="margin-left:25px" class="btn btn-default btn-xs"
                    style="height:25px" lang-key="reset">reset</a>
+                 </span>
 
-
-            </td>
-        </tr>
-    </table>
+    
 </form>
 <script>
     $(document).ready(function () {

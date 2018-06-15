@@ -34,6 +34,8 @@
                     <span lang-key="pageSize">pageSize</span>（K）：<input type="text" id="pageSize"  style="width:40px"  >
 					<button  onClick="doSetPageSize()" lang-key="setting">setting</button>
 
+                    <input type="checkbox" id="nowrap" style="margin-left: 10px" onclick="doNoWrap(this)">No Wrap
+
 
 				</td>
 			</tr>
@@ -52,13 +54,23 @@
 		 function doSetPageSize()
 		 {
 			 Common.setCookie("pageSize", document.getElementById("pageSize").value);
-		 }
 
-         document.getElementById("talog").style.height=( document.body.scrollHeight-80)+"px";
+		 }
+		 function doNoWrap(sender) {
+             Common.setCookie("nowrap", sender.checked?"nowrap":"normal");
+             $("#talog").css("white-space", Common.getCookie("nowrap","normal"));
+         }
+
+         //document.getElementById("talog").style.height=( document.body.scrollHeight-80)+"px";
 
 		 $(document).ready(function () {
 		     console.log(window.innerHeight);
              $("#talog").height(window.innerHeight-130);
+
+
+             $("#talog").css("white-space", Common.getCookie("nowrap","normal"));
+             if(Common.getCookie("nowrap","normal")=="nowrap")  document.getElementById("nowrap").checked=true;
+
          })
 		
 		</script>

@@ -7,8 +7,13 @@
 <script>
     var editPage="edit.htm";
     var taskType="${taskType}";
-    function refreshList() {
-        window.location = "${url}&scroll=" + $(document).scrollTop();
+    searchForm.action="list.htm";
+    function refreshList(n) {
+        if(!n) {
+            window.location = "${url}&scroll=" + $(document).scrollTop();
+        }else{
+            window.location ="${basePageUrl}&pn="+n;
+        }
     }
     $(document).ready(function () {
         $(document).scrollTop(${scroll});
@@ -81,7 +86,7 @@
                     </#if>
                     <span style="width:20px">&nbsp;</span>
 
-                    <a href="#" class="btn btn-primary btn-xs" onclick="edit(-${item.id})"  lang-key="copy">copy</a>
+                    <a href="#" class="btn btn-primary btn-xs" onclick="doPost('copy.htm?id=${item.id}',1)"  lang-key="copy">copy</a>
                     <span style="width:40px">&nbsp;</span>
                     <button class="btn btn-xs ${(item.status==1)?string("btn-warning","btn-success")}"
                             lang-key="${(item.status==1)?string("stop","start")}"

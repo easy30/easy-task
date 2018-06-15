@@ -95,11 +95,11 @@ function doSwitchIp(targetIp) {
     var url = 'switchIp.htm?ip='+ encodeURIComponent(ip);
     doBatch(url);
 }
-function doPost(url) {
+function doPost(url,pn) {
     Common.ajaxPost(url, null,
         function (success, data) {
             if (success)
-                refreshList();
+                refreshList(pn);
             else
                 alert($lg("error")+"：" + data);
         });

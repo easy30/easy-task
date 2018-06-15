@@ -229,7 +229,7 @@ public class TimeTaskController implements ApplicationContextAware {
         Map<String, Set<String>>  propsMap= timeTaskService.getPropsMap(taskType,userId);
         //Collection<String> ipSet=timeTaskMachineService.getMachines();
 		Collection<String> appNames=	machineListService.getAppNames();
-		// 复制
+		// copy (no use anymore)
 		if (id < 0) {
 			timeTask = timeTaskService.get(-id);
 			TimeTask newTimeTask = EntityUtils.create(TimeTask.class);
@@ -280,6 +280,20 @@ public class TimeTaskController implements ApplicationContextAware {
 			model.addAttribute("machines",machines);
 		}
 		return "timeTask/edit";
+	}
+
+	@ResponseBody
+	@RequestMapping("copy.htm")
+	public String copy( long id, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		TimeTask timeTask = timeTaskService.get(id);
+		TimeTask newTimeTask = EntityUtils.create(TimeTask.class);
+		EntityUtils.copyExclude(timeTask, newTimeTask, "id","taskResult","lastStartTime","lastEndTime");
+
+		newTimeTask.setStatus(0);
+		String randomIp= machineListService.getRandomMachine(timeTask.getAppName());
+		if(randomIp!=null) newTimeTask.setTargetIp(randomIp);
+		timeTaskService.save(newTimeTask);
+		return ""+newTimeTask.getId();
 	}
 
     @ResponseBody

@@ -59,3 +59,21 @@ function hideTableCols(width) {
 	})
 
 }
+
+function popover(sender,content,autoHide) {
+    //$(sender).popover('destroy');
+    var options = {"trigger": "manual", "placement": "auto", "content": content};
+    if (!autoHide) {
+        var func = " $(" + sender + ").popover('hide')";
+        var template = '<div class="popover" role="tooltip"><div class="popover-content"></div><div><button onclick="' + func + '">Close</button></div></div>';
+        options.template=template;
+
+    }
+    $(sender).popover(options);
+    $(sender).popover('show');
+    if(autoHide) {
+        setTimeout(function () {
+            $(sender).popover('hide');
+        }, 3000);
+    }
+}
