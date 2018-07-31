@@ -28,7 +28,7 @@ Click the "Log" button, you can see the task execution log (if not, you can stop
 
 ![log](docs/images/logEn.png)
 
-Click "Edit" to view or modify the task configuration. The system is based on spring, and the bean name "demoPlugin" is a built-in spring bean.<br/>
+Click "Modify" to view or modify the task configuration. The system is based on spring, and the bean name "demoPlugin" is a built-in spring bean.<br/>
 Click "Stop" to stop the task.
 - For the service system applying, see below how to apply to the “spring boot” and “sring mvc” applications.
 
@@ -37,7 +37,7 @@ Click "Stop" to stop the task.
 If you only want to quickly deploy a simple and usable scheduling system, you don't need to consider the existing business system, you can directly use the task-console source code development.
 - Check out the task-console spring boot code module, import it into the IDE, and execute com.cehome.task.console.TaskConsoleApplication for start.
 - Visit http://localhost:8080
-- Click the "View Log" button to view the log of the built-in demoPlugin task.
+- Click the "Log" button to view the log of the built-in demoPlugin task.
 - Modify the demoPlugin corresponding class com.cehome.task.console.DemoPlugin to redeploy and view the execution results.
 
 
@@ -47,7 +47,7 @@ In actual use, the console is just an administrative task, no tasks are executed
 java -jar task-console.jar --task.factory.appName=app1 --server.port=8091
 - Launch another command line window and execute commands as follows for the start of app1 (port 8092) <br/> 
 java -jar task-console.jar --task.factory.appName=app2 --server.port=8092
-- Switch the task to app2 to execute. Go to http://localhost:8080, click the "Modify" button, pop up the modification page, click the "Apply" drop-down box, you should be able to see APP1, APP2 is also inside, select APP2, then save and close.
+- Switch the task to app2 to execute. Go to http://localhost:8080, click the "Modify" button, pop up the modification page, click the "Application" drop-down box, you should be able to see APP1, APP2 is also inside, select APP2, then save and close.
 - Observe the command line output window of app2 and find that the demo has been transferred to app2 for execution.
 
 ### The scheduling platform is applied to existing spring boot application.
@@ -145,11 +145,11 @@ public class BootDemoPlugin extends TimeTaskPlugin {
 
 The task plugin can also be a normal spring bean, but when configuring the task information in the console, you need to specify the method to be executed.
 - Start the application task-spring-boot-client-demo
-- Visit http://localhost:8080 (make sure the console is the state of starting), click on the "add" task, "application" select "boot-client-demo"; plan time to fill in 5s (5 seconds); Bean name and above the developed plugin is consistent, fill in the "bootDemoPlugin"; other required fields are fill in at random <br/>
+- Visit http://localhost:8080 (make sure the console is the state of starting), click on the "Add" task, "Application" select "boot-client-demo"; plan time to fill in 5s (5 seconds); Bean name and above the developed plugin is consistent, fill in the "bootDemoPlugin"; other required fields are fill in at random <br/>
 
 ![addTask](docs/images/addTaskEn.png)
 
-- Save and close, click "Start", then click "View" log after more than 10 seconds, if you see the log of "task run...", everything is fine.
+- Save and close, click "Start", then click "Log" button after more than 10 seconds, if you see the log of "task run...", everything is fine.
 
 
 ### The scheduling platform is applied to existing spring mvc application
@@ -250,8 +250,8 @@ The task plugin can also be a normal spring bean, but when configuring the task 
 ```
 
 - Launch the application named "task-spring-mvc-client-demo"
-- Visit console (not mvc-demo) http://localhost:8080 (make sure the console is the state of starting), click on the "add" task, select "mvc-client-demo" for the application; fill in 5s (5 seconds) of the scheduled time; The bean name is the same as the above development plugin, fill in the "mvcDemoPlugin"; other required fields are fill in at random.
-- Save and close, click "Start", then click "View" log after more than 10 seconds, if you see the log of "task run..." , everything is fine.
+- Visit console (not mvc-demo) http://localhost:8080 (make sure the console is the state of starting), click on the "Add" task, select "mvc-client-demo" for the application; fill in 5s (5 seconds) of the scheduled time; The bean name is the same as the above development plugin, fill in the "mvcDemoPlugin"; other required fields are fill in at random.
+- Save and close, click "Start", then click "Log" button after more than 10 seconds, if you see the log of "task run..." , everything is fine.
 
 
 ### Use An External Database
