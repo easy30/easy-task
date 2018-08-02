@@ -1,4 +1,4 @@
-<a style="text-align: right;" href="docs/readme_cn.md">Chinese Version</a>
+<div style="text-align: right;"><a href="docs/readme_cn.md">Chinese Version</a></div>
 #Easy Task
 
 It is an easy to use distributed task scheduling platform. It is derived from Taobao lottery scheduling platform and has been used in the Taobao content crawling platform and The Tiejia Used Equipment Of Construction Machinery task scheduling platform. It is currently refactored and open source. It has the following characteristics:
