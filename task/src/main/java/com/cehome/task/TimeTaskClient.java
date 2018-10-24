@@ -120,20 +120,23 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
 
         DefaultListableBeanFactory factory=(DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
 
-        LogWrite.start(logPackages,logPath,logEncoding);
+        //LogWrite.start(logPackages,logPath,logEncoding);
 
 
         TimeTaskUtil.registerBean(factory,"taskSchedulerService",clientTaskSchedulerService());
 
 
         // 仅spring boot 用， mvc 需要手动指定
-        ClientServiceController clientServiceController=new ClientServiceController();
-        TimeTaskUtil.registerBean(factory,"springBootClientServiceController",clientServiceController);
+        ClientServiceController clientServiceController =null;
+        try {
+              clientServiceController = factory.getBean(ClientServiceController.class);
+        }catch (Exception e){
+            clientServiceController = new ClientServiceController();
+            TimeTaskUtil.registerBean(factory, "springBootClientServiceController", clientServiceController);
 
-        if(timeTaskFactory.isClusterMode()) {
-            logger.info("init machineHeartBeatService ");
-            TimeTaskUtil.registerBean(factory, "machineHeartBeatService", clientMachineHeartBeatService());
         }
+
+
     }
 
     public String getLocalMachine(){
@@ -160,6 +163,17 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if(!(contextRefreshedEvent.getApplicationContext() instanceof WebApplicationContext )){
+            return;
+        }
+        // sometimes logback will be reset (such as sleuth zipkin), so log must start  after spring loaded
+        LogWrite.start(logPackages,logPath,logEncoding);
+
+        if(timeTaskFactory.isClusterMode()) {
+            logger.info("init machineHeartBeatService ");
+            TimeTaskUtil.registerBean((DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory(), "machineHeartBeatService", clientMachineHeartBeatService());
+        }
+
         final WebApplicationContext w= (WebApplicationContext)contextRefreshedEvent.getApplicationContext();
 /*
         if(inited) {
