@@ -234,7 +234,10 @@ public class RedisConfigService implements ConfigService {
         try {
             jedis = getJedis();
             List<String> time=jedis.time();
-            return Long.parseLong(time.get(0)+time.get(1).substring(0,3));
+            // second*1000  , us/1000
+            long ms=Long.parseLong(time.get(0))*1000+  Long.parseLong(time.get(1))/1000;
+            return ms;
+            //return Long.parseLong(time.get(0)+time.get(1).substring(0,3));
         }finally {
             if(jedis!=null)jedis.close();
         }
@@ -245,6 +248,13 @@ public class RedisConfigService implements ConfigService {
     public static void main(String[] args) {
         //ConfigService configService=new ConfigService();
         //configService.
+        RedisConfigService redisConfigService=new RedisConfigService("192.168.0.54",6379);
+        List<String> time=redisConfigService.getJedis().time();
+        System.out.println(System.currentTimeMillis());
+        System.out.println(redisConfigService.getTime());
+        for(String s:time)
+        System.out.println(s);
+
     }
 
 }
