@@ -1,82 +1,69 @@
-## Easy Task 概述
-简单易用的分布式任务调度平台。来源于淘宝彩票调度平台，并先后在淘宝内容抓取平台和铁甲二手机任务调度平台中使用，目前重构并开源。具有如下特点：
-- 去中心化。
-- 支持上百台不同业务的应用服务器接入。任务在每个应用上独立执行，充分利用应用本身资源。
-- 故障转移。应用如有多台执行机器，一台机器挂掉，其上的任务会切到其它机器。
-- 管理控制台统一对任务修改、启动、停止等。控制台挂掉不影响任务的执行。
-- 可以在线查看任务日志，实时了解任务执行情况。
+# Easy Task
+**If you want to see the Chinese version, please click [Chinese Version](docs/readme_cn.md)<br/>**
 
-## 这个调度平台有什么优势呢？
-- 一般的任务调度系统，代码逻辑都是集成到调度系统里面的，需要把各个业务系统调度代码和依赖代码迁入调度系统，这是非常麻烦的一件事情。
-而Easy Task只是负责调度，复杂的代码逻辑还是在各自的业务系统开发和执行，保证了开发的效率，也避免了业务系统互相影响。
-- 可以在线按页查看所有任务的执行日志，任务执行再也不是一个黑匣子。
+It is an easy to use distributed task scheduling platform. It is derived from Taobao lottery scheduling platform and has been used in the Taobao content crawling platform and The Tiejia Used Equipment Of Construction Machinery task scheduling platform. It is currently refactored and open source. It has the following characteristics:
+- Decentralization.
+- Support applying to hundreds of application server for different services. Tasks are executed independently on each application, taking full advantage of the application's own resources.
+- Failover. If the application has multiple execution machines, one machine hangs and the tasks on it will switch to other machines.
+- The management console unifies modification, start and stop the task, and so on. Hanging out of the console does not affect the execution of the task.
+- You can view the task log online to get a real-time view of task execution.
 
+### What are the advantages of this scheduling platform?
+- The general task scheduling system, the code logic is integrated into the scheduling system, it is necessary to move the business system scheduling code and dependent code into the scheduling system, which is very troublesome. However, Easy Task is only responsible for scheduling, and the complex code logic is still developed and executed in the respective business systems, ensuring the efficiency of development and avoiding the influence of business systems.
+- You can view the execution logs of all tasks online by page, and task execution is no longer a black box.<br/>
 
-![架构图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/system.png)
-
-## 快速体验一
-   如果你有若干个业务系统（作为worker）想接入任务调度平台，可以直接下载并启动一个控制台。
-   控制台同时也是worker，也能执行任务，缺省会启动一个演示用的demoPlugin任务（而实际场景console只做管理，不做任务执行）。
-
--  下载并启动
-
-   到release中下载或直接下载可执行jar包 https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar
-
-   然后执行命令启动： java -jar task-console.jar
-  
-
-- 访问 http://localhost:8080 ，可以看到一个demo任务
-
-![demo图](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/main.png)
-
-- 任务管理
-  点击“查看日志”按钮，可以看到任务执行日志（如果没有，可以停10秒再刷新一下）
-
-  ![log](https://raw.githubusercontent.com/cehome-com/easy-task/master/docs/images/log.png)
-  
-  点击“修改”查看或修改任务配置。系统基于spring，Bean名称“demoPlugin"就是内置的一个spring bean。
-  
-  点击“停止”可以停止任务。
-
--  业务系统接入参考下面 “spring boot”和“sring mvc”应用如何接入。 
-
-## 快速体验二
-   如果你只想快速部署一套简单可用的调度系统，不需要考虑现有业务系统，则直接利用task-console源代码开发。 
- - 剪出task-console spring boot代码模块，导入IDE中，  执行com.cehome.task.console.TaskConsoleApplication启动。
- - 访问 http://localhost:8080 
- - 点击“查看日志”按钮查看内置demoPlugin任务的日志。
- - 修改demoPlugin对应类com.cehome.task.console.DemoPlugin，重新部署并查看执行结果。
- 
-## 模拟业务系统（worker）接入调度平台
-实际使用中，console只是管理任务，不执行任务，任务是在业务系统中执行的。下面模拟app1和app2两个业务系统接入调度平台。为了方便，还是用task-console.jar来模拟。执行前，先保证上面的console还在运行状态。
-
-- 启动另一个命令行窗口，执行如下命令启动app1（端口为8091）
-
-**java -jar task-console.jar --task.factory.appName=app1 --server.port=8091**
+![system](docs/images/system.png)
 
 
--启动另一个命令行窗口，执行如下命令启动app2， （端口为8092）
+### First quick experience
+If you have several business systems (as worker) that want to use the task scheduling platform, you can download and launch a console directly. The console is also a worker, and can also execute tasks. By default, a demoPlugin task for the demo is started (the actual scene console is only managed, not task execution).
+- Download and start <br/>
+Download from the release or download the executable jar file directly https://github.com/cehome-com/resource/raw/master/easy-task/2.0.3/task-console.jar <br/>
+Then execute the command to start:  java -jar task-console.jar
+- Visit http://localhost:8080 and you can see a demo task <br/>
 
-**java -jar task-console.jar --task.factory.appName=app2 --server.port=8092**
+![demo](docs/images/demoEn.png)
 
-- 把任务切换到app2中执行。
-  访问http://localhost:8080 ，点击“修改”按钮，弹出修改界面，点击“应用”下拉框，应该能看到app1、app2也在里面，选择app2，然后保存并关闭。
-- 观察app2的命令行输出窗口，发现demo已经转移到在app2中执行了。
+- Task Management. <br/>
+Click the "Log" button, you can see the task execution log (if not, you can stop for 10 seconds and then refresh)<br/>
 
-## 现有spring boot应用接入调度平台
-以 task-spring-boot-client-demo 模块来说明spring boot应用如何接入调度平台。
-- 增加依赖
+![log](docs/images/logEn.png)
 
+Click "Modify" to view or modify the task configuration. The system is based on spring, and the bean name "demoPlugin" is a built-in spring bean.<br/>
+Click "Stop" to stop the task.
+- For the service system applying, see below how to apply to the “spring boot” and “sring mvc” applications.
+
+
+### Second quick experience
+If you only want to quickly deploy a simple and usable scheduling system, you don't need to consider the existing business system, you can directly use the task-console source code development.
+- Check out the task-console spring boot code module, import it into the IDE, and execute com.cehome.task.console.TaskConsoleApplication for start.
+- Visit http://localhost:8080
+- Click the "Log" button to view the log of the built-in demoPlugin task.
+- Modify the demoPlugin corresponding class com.cehome.task.console.DemoPlugin to redeploy and view the execution results.
+
+
+### Simulate scheduling platform is applied to business system (worker).
+In actual use, the console is just an administrative task, no tasks are executed, and tasks are executed in the business system. The following simulates scheduling platform is applied to two service systems named "app1" and "app2". For convenience, still use the task-console.jar for simulation. Before proceeding, first make sure that the above console is still running.
+- Launch another command line window and execute commands as follows for the start of app1 (port 8091) <br/>
+java -jar task-console.jar --task.factory.appName=app1 --server.port=8091
+- Launch another command line window and execute commands as follows for the start of app1 (port 8092) <br/> 
+java -jar task-console.jar --task.factory.appName=app2 --server.port=8092
+- Switch the task to app2 to execute. Go to http://localhost:8080, click the "Modify" button, pop up the modification page, click the "Application" drop-down box, you should be able to see APP1, APP2 is also inside, select APP2, then save and close.
+- Observe the command line output window of app2 and find that the demo has been transferred to app2 for execution.
+
+### The scheduling platform is applied to existing spring boot application.
+Use the task-spring-boot-client-demo module to explain how to apply the scheduling platform to the spring boot application.
+- Increase dependence
+        
 ```
-        <dependency>
-            <groupId>com.cehome</groupId>
-            <artifactId>task</artifactId>
-            <version>2.0.3</version>
-        </dependency>
+<dependency>
+    <groupId>com.cehome</groupId>
+    <artifactId>task</artifactId>
+    <version>2.0.3</version>
+</dependency>
 ```
 
-- 加入@EnableTimeTaskClient注解
-
+- Join the @EnableTimeTaskClient annotation
 
 ```
 package com.cehome.task.client.demo;
@@ -93,21 +80,16 @@ public class BootApplication {
     }
 
 }
-
 ```
- 
 
-- 修改配置信息application.properties
+- Modify the configuration file named "application.properties" <br/> 
+Description of the requirements configuration: <br/> <br/>
+task.factory.appName - The application name, which should be different for different applications. <br/> <br/> 
+task.factory.name - The name of the cluster, which is also the name of the database table. Do not arbitrarily change it after you have made it.  <br/> <br/>
+task.datasource.* Configure database information to support H2 and mysql databases. It is recommended that the production environment use the mysql database. <br/> <br/> 
+task.log.path - logback task log output path. <br/> <br/>
+Task.log.packages - The package name of the task execution class, used for logging. Multiple package names are separated by a semicolon. If it is not sure, use the ROOT root log.
 
-需求配置的信息说明：
-
-task.factory.appName - 应用名称，不同应用应该不一样。
-
-task.factory.name - 集群名称，同时也是数据库表名，定了以后不要随意改动。
-task.datasource.* 配置数据库信息，支持H2和mysql数据库，建议生产环境使用mysql数据库。
-
-task.log.path - logback任务日志输出路径。
-task.log.packages - 任务执行类所在包名，记录日志用。多个包名用半角分号隔开。如果不好确定，就用ROOT根日志。
 ```
 spring.application.name=boot-client-demo
 server.port=8081
@@ -129,10 +111,8 @@ task.log.packages=ROOT
 task.log.path=/logs/easy_task/boot_demo
 ```
 
-- 开发任务插件
-
-任务插件可以继承com.cehome.task.client.TimeTaskPlugin，由于执行方法是run()是固定的，在console配置任务信息时候就可以不指定方法名。stop()方法会在点击停止任务时候触发，代码应用停止任务执行和释放必要的资源。
-
+- Development task plugin <br/>
+The task plugin can extend com.cehome.task.client.TimeTaskPlugin. Since the execution method named "run()" is fixed, you can not specify the method name when configuring the task information in the console. The stop() method fires when the stop task is clicked, and the code application stops the task execution and releases the necessary resources.
 
 ```
 package com.cehome.task.client.demo;
@@ -162,60 +142,50 @@ public class BootDemoPlugin extends TimeTaskPlugin {
         logger.info("task "+context.getName()+" is stopped ");
     }
 }
-
-
-
 ```
 
+The task plugin can also be a normal spring bean, but when configuring the task information in the console, you need to specify the method to be executed.
+- Start the application task-spring-boot-client-demo
+- Visit http://localhost:8080 (make sure the console is the state of starting), click on the "Add" task, "Application" select "boot-client-demo"; plan time to fill in 5s (5 seconds); Bean name and above the developed plugin is consistent, fill in the "bootDemoPlugin"; other required fields are fill in at random <br/>
 
-任务插件也可以是普通的spring bean，但在console配置任务信息时候，需要指定要执行的方法。
+![addTask](docs/images/addTaskEn.png)
 
-- 启动应用task-spring-boot-client-demo
-- 访问http://localhost:8080 （确保控制台是启动状态的），点击“添加”任务，
- “应用”选择“boot-client-demo”；计划时间填5s（5秒）；Bean名称跟上面开发插件一致，填写“bootDemoPlugin”；其它必填字段自己随意。
-![添加任务](https://github.com/cehome-com/easy-task/raw/master/docs/images/addTask.png)
-- 保存并关闭，点击“启动”，然后过10多秒钟点击“查看”日志，如果看到“task run……”日志，说明一切正常。
--
+- Save and close, click "Start", then click "Log" button after more than 10 seconds, if you see the log of "task run...", everything is fine.
 
 
-## 现有spring mvc应用接入调度平台
-以 task-spring-mvc-client-demo 模块来说明。
-- 增加依赖
-
+### The scheduling platform is applied to existing spring mvc application
+Use the task-spring-mvc-client-demo module to explain .
+- Increase dependence
+        
 ```
-        <dependency>
+<dependency>
             <groupId>com.cehome</groupId>
             <artifactId>task</artifactId>
             <version>2.0.3</version>
         </dependency>
 ```
 
-- spring xml中导入bean：
+- Import the bean in the spring.xml file:
 
 ```
 <import resource="classpath*:task-client-spring-config.xml"></import>
-
 ```
 
-- 在spring xml 中引入配置信息spring/config.properties
-
-
+- Introducing spring/config.properties configuration information in spring.xml
+ 
 ```
-  <context:annotation-config/>
-<context:property-placeholder location="classpath*:spring/config.properties"/>
-
+<context:annotation-config/>
+    <context:property-placeholder location="classpath*:spring/config.properties"/>
 ```
 
 
-- 在对应的spring/config.properties添加配置信息：
+- Add configuration information in the corresponding spring/config.properties:  <br/> <br/>
+task.factory.appName - The application name, which should be different for different applications.  <br/> <br/> 
+task.factory.name - The name of the cluster, which is also the name of the database table. Do not arbitrarily change it after you have made it.  <br/> <br/>
+task.datasource.* Configure database information to support H2 and mysql databases. It is recommended that the production environment use the mysql database.  <br/> <br/>
+task.log.path - logback task log output path.  <br/> <br/> 
+task.log.packages - is the package’s name of the task execution class, used for logging. Multiple package names are separated by a semicolon. If it is not sure, use the ROOT root log.  
 
-task.factory.appName - 应用名称，不同应用应该不一样。
-
-task.factory.name - 集群名称，同时也是数据库表名，定了以后不要随意改动。
-task.datasource.* 配置数据库信息，支持H2和mysql数据库，建议生产环境使用mysql数据库。
-
-task.log.path - logback任务日志输出路径。
-task.log.packages - 任务执行类所在包名，记录日志用。多个包名用半角分号隔开。如果不好确定，就用ROOT根日志。
 ```
 task.factory.appName=mvc-client-demo
 task.factory.name=easy_task
@@ -229,23 +199,19 @@ task.datasource.password=
 #------  client options --------
 task.log.packages=com.cehome.task.client.demo
 task.log.path=/logs/easy_task/mvc_demo
-
-
-```
-- 在spring mvc xml配置远程在线日志查看的controller。 不配这个controller则console无法在线连接到应用查看日志。
-
 ```
 
-	<context:component-scan
+
+- Configure the controller of remote online log view in file named "springmvc.xml". Without this controller, the console cannot connect to the application to view the log online.
+	
+```
+<context:component-scan
 			base-package="com.cehome.task.client.controller"/>
 	<mvc:annotation-driven />
 ```
 
-
-- 开发任务插件
-
-任务插件可以继承com.cehome.task.client.TimeTaskPlugin，由于执行方法是run()是固定的，在console配置任务信息时候就可以不配置。stop()方法会在点击停止任务时候触发，代码应用停止任务执行和释放必要的资源。
-
+- Development task plugin <br/> 
+The task plugin can extend com.cehome.task.client.TimeTaskPlugin. Since the execution method named "run()" is fixed, you can not specify the method name when configuring the task information in the console. The stop() method fires when the stop task is clicked, and the code application stops the task execution and releases the necessary resources.
 
 ```
 package com.cehome.task.client.demo;
@@ -275,54 +241,42 @@ public class MvcDemoPlugin extends TimeTaskPlugin {
         logger.info("task "+context.getName()+" is stopped ");
     }
 }
-
-
-
 ```
 
-
-任务插件也可以是普通的spring bean，但在console配置任务信息时候，需要指定要执行的方法。
-
-- 在spring xml 加入插件的扫描路径
-
-```
-   <context:component-scan  base-package="com.cehome.task.client.demo"/>
-
-```
-
-
-- 启动应用task-spring-mvc-client-demo
-- 访问console（不是mvc-demo）http://localhost:8080 （确保控制台是启动状态的），点击“添加”任务，
- 应用选择“mvc-client-demo”；计划时间填5s（5秒）；Bean名称跟上面开发插件一致，填写“mvcDemoPlugin”；其它必填字段自己随意。
-- 保存并关闭，点击“启动”，然后过10多秒钟点击“查看”日志，如果看到“task run……”日志，说明一切正常。
-
-
-## 使用外部数据库
-缺省的情况下，console会启动一个内部的数据库，生产环境建议用外部数据库。还是以H2数据库来说明：
-
-- 启动H2数据库
-
-到 http://www.h2database.com/html/download.html 下载h2 数据库并解压，进入bin目录，执行命令启动数据库（9092是数据库访问端口）。
-
- java -cp h2*.jar org.h2.tools.Server -tcpPort 9092  -tcpAllowOthers  -webPort 8082 -webAllowOthers 
-
-- 修改console或client数据库配置信息
+The task plugin can also be a normal spring bean, but when configuring the task information in the console, you need to specify the method to be executed.
+- Add the scan path of the plugin in spring.xml
   
 ```
+<context:component-scan  base-package="com.cehome.task.client.demo"/>
+```
 
+- Launch the application named "task-spring-mvc-client-demo"
+- Visit console (not mvc-demo) http://localhost:8080 (make sure the console is the state of starting), click on the "Add" task, select "mvc-client-demo" for the application; fill in 5s (5 seconds) of the scheduled time; The bean name is the same as the above development plugin, fill in the "mvcDemoPlugin"; other required fields are fill in at random.
+- Save and close, click "Start", then click "Log" button after more than 10 seconds, if you see the log of "task run..." , everything is fine.
+
+
+### Use An External Database
+By default, the console starts an internal database, and the production environment recommends using an external database. Still use the H2 database to illustrate:
+- Start the H2 database <br/>
+Go to http://www.h2database.com/html/download.html and download the h2 database and extract it. Go to the “bin” directory and execute the command to start the database (9092 is the database access port).<br/>
+java -cp h2*.jar org.h2.tools.Server -tcpPort 9092 -tcpAllowOthers -webPort 8082 -webAllowOthers
+- Modify the console or client database configuration information
+
+```
 task.datasource.driverClassName=org.h2.Driver
 task.datasource.url=jdbc:h2:tcp://192.168.0.10:9092/~/easy_task_db;MODE=MYSQL
 task.datasource.username=sa
 task.datasource.password=
 ```
-  如果是console，可以修改task.h2.start=false 表示禁用内部数据库
-  
+
+If it is a console, you can modify “task.h2.start=false” to disable the internal database.
+
 ```
 task.h2.start=false
-
 ```
 
-## mysql数据库配置参考
+
+### Mysql Database Configuration Reference
 
 ```
 task.datasource.driverClassName=com.mysql.jdbc.Driver
@@ -331,20 +285,13 @@ task.datasource.username=root
 task.datasource.password=123456
 ```
 
-## 最佳实践建议
-- 独立mysql数据库
-- console 至少两个node
-- 若干应用，每个应用至少保持两个node
+
+### Best Practice Advice
+- Independent mysql database
+- Console has at least two nodes
+- Several applications, each application maintains at least two nodes
 
 
-## 配置信息详细说明
-
-
-## 控制台操作说明
-
-
-
-
-
-
-
+### Languages  
+English(en) and chinese(cn) is supported. Default is english, 
+Add "**language=cn**" to application.properties to enable chinese.
