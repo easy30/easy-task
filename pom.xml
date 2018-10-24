@@ -5,8 +5,8 @@
     <groupId>com.cehome</groupId>
     <artifactId>easy-task</artifactId>
     <packaging>pom</packaging>
-    <name>task-parent</name>
-    <version>2.0.4-SNAPSHOT</version>
+    <name>easy-task</name>
+    <version>2.0.5</version>
     <url>https://github.com/cehome-com/easy-task</url>
     <description>easy task scheduler</description>
     <properties>
@@ -94,6 +94,17 @@
             </distributionManagement>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>oss</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>

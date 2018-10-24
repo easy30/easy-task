@@ -22,9 +22,9 @@
 					<a
 						href="getLog.htm?id=${RequestParameters.id}&pn=1" lang-key="firstPage"></a>
 					<a
-						href="getLog.htm?id=${RequestParameters.id}&pn=${pn-1}" lang-key="prevPage"></a>
+						href="getLog.htm?id=${RequestParameters.id}&pn=${(pn-1)?c}" lang-key="prevPage"></a>
 					<a
-						href="getLog.htm?id=${RequestParameters.id}&pn=${pn + 1}" lang-key="nextPage"></a>
+						href="getLog.htm?id=${RequestParameters.id}&pn=${(pn + 1)?c}" lang-key="nextPage"></a>
 					<a
 						href="getLog.htm?id=${RequestParameters.id}&pn=-2" lang-key="lastPage"></a>
 					&nbsp;&nbsp;

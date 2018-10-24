@@ -3,8 +3,8 @@
 &nbsp; &nbsp; <span lang-key="total"></span> ${totalCount}
 		  &nbsp;&nbsp;
 		<a href="${basePageUrl}&pn=1" class="btn btn-info btn-xs" lang-key="firstPage"></a>
-		<a href="${basePageUrl}&pn=${pn-1}" class="btn btn-info btn-xs" lang-key="prevPage"></a>
-		<a href="${basePageUrl}&pn=${pn + 1}" class="btn btn-info btn-xs" lang-key="nextPage"></a>
+		<a href="${basePageUrl}&pn=${(pn-1)?c}" class="btn btn-info btn-xs" lang-key="prevPage"></a>
+		<a href="${basePageUrl}&pn=${(pn + 1)?c}" class="btn btn-info btn-xs" lang-key="nextPage"></a>
 		<a href="${basePageUrl}&pn=-2"  class="btn btn-info btn-xs" lang-key="lastPage"></a>
 			&nbsp;&nbsp; 
 		<input type="text" id="jump" size="1" style="width: 40px">
