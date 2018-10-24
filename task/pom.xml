@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <version>1.5.7.RELEASE</version>
+            <version>1.5.12.RELEASE</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
