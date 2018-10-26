@@ -50,6 +50,9 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
     @Value("${task.taskCheckInterval:5000}")
     private long taskCheckInterval;
 
+    @Value("${task.pool.threadCount:30}")
+    private int poolThreadCount;
+
     protected  String localMachine;
     private String serviceUrl;
 
@@ -104,6 +107,14 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
 
     public void setUseHostName(boolean useHostName) {
         this.useHostName = useHostName;
+    }
+
+    public int getPoolThreadCount() {
+        return poolThreadCount;
+    }
+
+    public void setPoolThreadCount(int poolThreadCount) {
+        this.poolThreadCount = poolThreadCount;
     }
 
     @Override

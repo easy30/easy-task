@@ -46,7 +46,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     private long lastLoadTimeCount=0;
 
     Map<Long,TaskRunnable> taskRunnableMap=new LinkedHashMap<>();
-    private int threadCount=30;
+    //private int threadCount=30;
     private int poolCount=3;
     //private Map<Long, Integer> statusMap = new HashMap<Long, Integer>();
     private  ApplicationContext applicationContext;
@@ -98,7 +98,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
         if(StringUtils.isBlank(appName)) throw new RuntimeException("appName is blank");
         executors=new ScheduledThreadPoolExecutor[poolCount];
         for(int i=0;i<poolCount;i++) {
-            ScheduledThreadPoolExecutor  executor = new ScheduledThreadPoolExecutor(threadCount);
+            ScheduledThreadPoolExecutor  executor = new ScheduledThreadPoolExecutor(timeTaskClient.getPoolThreadCount());
             executors[i]=executor;
         }
 
