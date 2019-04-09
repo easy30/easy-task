@@ -60,6 +60,7 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
     TimeTaskFactory timeTaskFactory;
 
     ApplicationContext applicationContext;
+    private volatile boolean inited=false;
 
     public long getHeartBeatSendInterval() {
         return heartBeatSendInterval;
@@ -177,6 +178,8 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
         if(!(contextRefreshedEvent.getApplicationContext() instanceof WebApplicationContext )){
             return;
         }
+        if(inited) return;
+        inited=true;
         // sometimes logback will be reset (such as sleuth zipkin), so log must start  after spring loaded
         LogWrite.start(logPackages,logPath,logEncoding);
 
@@ -218,6 +221,7 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
                 String contextPath=w.getServletContext().getContextPath();
                 if(!contextPath.endsWith("/"))contextPath+="/";
                 String baseUrl=info[0]+"://" +timeTaskFactory.getLocalIP()+":"+info[1]+ contextPath;
+                logger.info("find service url={}",baseUrl);
                 registerServiceUrl(baseUrl);
             }
         }).start();
