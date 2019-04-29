@@ -40,6 +40,8 @@ public class TimeTaskFactoryConfiguration {
         poolProperties.setDriverClassName(driverClassName);
         poolProperties.setValidationQuery("select 1");
         poolProperties.setTestWhileIdle(true);
+        poolProperties.setMinIdle(3);
+        poolProperties.setMaxIdle(5);
         poolProperties.setTimeBetweenEvictionRunsMillis(30*1000);
         return  poolProperties;
     }
