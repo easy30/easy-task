@@ -26,12 +26,12 @@ public class TimeTaskFactoryConfiguration {
     //@Value("${task.factory.createTable:false}")
     //private boolean createTable;
 
-   /* @Value("${task.datasource.url}")
+    @Value("${task.datasource.url}")
     private String url;
     @Value("${task.datasource.username}")
     private String username;
     @Value("${task.datasource.password}")
-    private String password;*/
+    private String password;
 
     @Bean
     @ConfigurationProperties(prefix = "task.datasource")
@@ -43,6 +43,11 @@ public class TimeTaskFactoryConfiguration {
         poolProperties.setMinIdle(0);
         //poolProperties.setMaxIdle(5);
         poolProperties.setTimeBetweenEvictionRunsMillis(30*1000);
+
+        //--   @ConfigurationProperties may not enable in spring mvc ,so set value manually
+        poolProperties.setUrl(url);
+        poolProperties.setUsername(username);
+        poolProperties.setPassword(password);
         return  poolProperties;
     }
 
