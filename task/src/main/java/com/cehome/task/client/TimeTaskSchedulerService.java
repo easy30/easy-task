@@ -194,13 +194,13 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                             method.invoke(bean, timeTaskContext,beanArgs);
                             break;
                         } else {
-                            throw new Exception("任务 " + id
+                            throw new Exception("Task " + id
                                     + "  method args must be (JSONObject) or (TimeTaskContext,JSONObject)");
                         }
                     }
                 }
                 if (!find)  {
-                    throw new Exception("任务 " + id + "  can not find method with name:" + beanMethod);
+                    throw new Exception("Task " + id + "  can not find method with name:" + beanMethod);
                 }
 
 
