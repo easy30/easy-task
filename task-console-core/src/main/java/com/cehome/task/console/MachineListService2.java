@@ -45,8 +45,8 @@ public class MachineListService2 extends MachineListService {
         Set<String> set=new TreeSet<String>();
         for(Map.Entry<String,String> e :map.entrySet()){
            long  t=Convert.toLong(e.getValue(),0);
-           //-- 只显示10分钟以内的机器
-            if(System.currentTimeMillis()-t<1000*600){
+           //-- 只显示10分钟以内的机器  System.currentTimeMillis()
+            if(configService.getTime()-t<1000*600){
                 //if(appName==null || e.getKey().startsWith(appName))
                 if(withAppName){
                     set.add(appName+SPLIT+e.getKey());
