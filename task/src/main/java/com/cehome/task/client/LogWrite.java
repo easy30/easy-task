@@ -7,6 +7,7 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.sift.MDCBasedDiscriminator;
 import ch.qos.logback.classic.sift.SiftingAppender;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LoggerContextListener;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -18,10 +19,14 @@ import ch.qos.logback.core.sift.AppenderFactory;
 import ch.qos.logback.core.util.FileSize;
 import jsharp.util.FileKit;
 import org.apache.commons.lang3.StringUtils;
+import org.h2.util.New;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -29,6 +34,7 @@ import java.nio.charset.Charset;
 public class LogWrite {
 
     static String BASE_LOG_NAME = "com.cehome.task.client";
+    static String APPENDER_NAME="easy-task-siftingAppender";
     static int maxHistory = 4;
     static String totalSizeCap = "500mb";
     static String maxFileSize = "100mb";
@@ -88,28 +94,135 @@ public class LogWrite {
 
         siftingAppender.setDiscriminator(discriminator);
 
-    /* set your factory to the sifting appender */
+        /* set your factory to the sifting appender */
         siftingAppender.setAppenderFactory(appenderFactory);
         siftingAppender.setContext(loggerContext);
-        siftingAppender.setName("siftingAppender");
+        siftingAppender.setName(APPENDER_NAME);
         siftingAppender.start();
 
         //Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         if (StringUtils.isBlank(logPackages)) {
             logPackages = Logger.ROOT_LOGGER_NAME;
         }
+        logPackages+=";"+BASE_LOG_NAME;
+
+        //add log
+        info("logPackages="+logPackages);
+        addLogs(logPackages,siftingAppender);
+
+        // monitor log rest
+        info("monitor log reset");
+        addLogResetListener(logPackages,siftingAppender);
+        //monitor log change
+        info("monitor log change");
+        new AppenderConfigThread( logPackages,siftingAppender,0,30,10).start();
+
+
+    }
+
+    private static void addLogs(String logPackages,SiftingAppender appender){
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         for (String logPackage : logPackages.split(";")) {
             Logger logbackLogger = loggerContext.getLogger(logPackage);
-            logbackLogger.setLevel(Level.INFO);
-            logbackLogger.setAdditive(false);
-            logbackLogger.addAppender(siftingAppender);
+            if(logbackLogger.getAppender(APPENDER_NAME)==null){
+                info("add appender to logger:"+logbackLogger.getName());
+                logbackLogger.setLevel(Level.INFO);
+                logbackLogger.setAdditive(false);
+                logbackLogger.addAppender(appender);
+            }
+
+        }
+    }
+
+    private static void addLogResetListener(final String logPackages,final SiftingAppender appender){
+        if(!(LoggerFactory.getILoggerFactory() instanceof LoggerContext)){
+            info("Ignore logger hook of "+LoggerFactory.getILoggerFactory() );
+            //java.lang.ClassCastException: org.slf4j.helpers.SubstituteLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext
+            return;
+        }
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.addListener(new LoggerContextListener() {
+            @Override
+            public boolean isResetResistant() {
+                return false;
+            }
+
+            @Override
+            public void onStart(LoggerContext context) {
+
+            }
+
+            @Override
+            public void onReset(LoggerContext context) {
+                //when rest happend ,logger may rest ,delay 20s
+                info("log onReset, start to check logs");
+                new AppenderConfigThread( logPackages, appender,20,0,1).start();
+            }
+
+            @Override
+            public void onStop(LoggerContext context) {
+                info("logcontext stop");
+            }
+
+            @Override
+            public void onLevelChange(ch.qos.logback.classic.Logger logger, Level level) {
+
+            }
+        });
+    }
+    private static void info(String message) {
+        System.out.println(new Date().toLocaleString()+" [TASK-INFO] "+message);
+    }
+
+    static class AppenderConfigThread extends Thread {
+
+        private String logPackages;
+        private int delaySeconds;
+        private SiftingAppender  appender;
+        private int interval;
+        private int times;
+        private int currentTimes=0;
+
+        public AppenderConfigThread(String logPackages,SiftingAppender appender, int delaySeconds,int interval,int times) {
+
+            this.logPackages = logPackages;
+            this.appender=appender;
+            this.delaySeconds=delaySeconds;
+            this.interval=interval;
+            this.times=times;
+            this.setDaemon(true);
+
+
         }
 
 
-        Logger logbackLogger = loggerContext.getLogger(BASE_LOG_NAME);
-        logbackLogger.setLevel(Level.INFO);
-        logbackLogger.setAdditive(false);
-        logbackLogger.addAppender(siftingAppender);
+        @Override
+        public void run() {
+
+            try {
+                Thread.sleep(1000*delaySeconds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            info("auto check loggers appender for " + logPackages+" for "+times);
+            while (currentTimes<times) {
+                synchronized (AppenderConfigThread.class) {
+                    addLogs(logPackages,appender);
+                }
+
+                currentTimes++;
+
+                if(interval>0) {
+                    try {
+                        Thread.sleep(1000 * interval);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
 
 
     }
