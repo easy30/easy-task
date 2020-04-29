@@ -372,7 +372,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
                 //System.out.println("-------------------delay:"+delay+","+date.toLocaleString());
 
             } catch (ParseException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("parse CronExpression error.task id="+timeTask.getId()+",cron="+timeTask.getCron(),e);
             }
         }
         runnable.setStatus(STATUS_RUNNING);
