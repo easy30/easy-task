@@ -343,14 +343,18 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
     }
 
     public void startTask(TimeTask timeTask){
-        TaskRunnable taskRunnable=taskRunnableMap.get(timeTask.getId());
-        if (isRunning(taskRunnable )) {
-            logger.warn("alread start , ignore ...");
-            return;
+        try {
+            TaskRunnable taskRunnable = taskRunnableMap.get(timeTask.getId());
+            if (isRunning(taskRunnable)) {
+                logger.warn("already start , ignore ...");
+                return;
+            }
+            TaskRunnable runnable = new TaskRunnable(timeTask);
+            schedulerNextFire(runnable);
+            taskRunnableMap.put(timeTask.getId(), runnable);
+        }catch (Exception e){
+            logger.error("start task fail",e);
         }
-        TaskRunnable runnable = new TaskRunnable( timeTask) ;
-        schedulerNextFire(runnable)  ;
-        taskRunnableMap.put(timeTask.getId(),runnable);
 
 
         //executor.scheduleWithFixedDelay(runnable, 2, 3, TimeUnit.SECONDS);

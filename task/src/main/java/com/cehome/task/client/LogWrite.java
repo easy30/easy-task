@@ -126,8 +126,11 @@ public class LogWrite {
             Logger logbackLogger = loggerContext.getLogger(logPackage);
             if(logbackLogger.getAppender(APPENDER_NAME)==null){
                 info("add appender to logger:"+logbackLogger.getName());
-                logbackLogger.setLevel(Level.INFO);
-                logbackLogger.setAdditive(false);
+                //for root , use system define level
+                if(!Logger.ROOT_LOGGER_NAME.equals(logbackLogger.getName())) {
+                    logbackLogger.setLevel(Level.INFO);
+                    logbackLogger.setAdditive(false);
+                }
                 logbackLogger.addAppender(appender);
             }
 

@@ -24,3 +24,6 @@ nbdist/
 .nb-gradle/
 
 *.log
+
+### mac ###
+.DS_Store
