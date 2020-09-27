@@ -11,6 +11,15 @@ public class TimeTaskContext extends HashMap {
     private TimeTask timeTask;
     private long runTimes;
     private volatile boolean running;
+
+    public TimeTaskContext(){
+
+    }
+    public TimeTaskContext(TimeTask timeTask,boolean running){
+        this.timeTask=timeTask;
+        this.running=running;
+    }
+
     public long getRunTimes() {
         return runTimes;
     }

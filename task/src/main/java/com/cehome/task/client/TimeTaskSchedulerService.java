@@ -261,7 +261,7 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
         List<TimeTask> timeTasks =timeTaskDao.queryList(sql,appName,lastLoadTime);
         if(timeCal2.isTimeUp()>0) {
             for (int i = 0; i < poolCount; i++) {
-                logger.info("{} - find timetasks. app_name={}, size={},active tasks={}", i, appName, timeTasks.size(), executors[i].getActiveCount());
+                logger.info("{} - find timetasks. app_name={}, changed tasks={},active tasks={}", i, appName, timeTasks.size(), executors[i].getActiveCount());
             }
         }
         Date maxDate = lastLoadTime;
