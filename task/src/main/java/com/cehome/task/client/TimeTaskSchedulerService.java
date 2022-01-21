@@ -107,8 +107,8 @@ public class TimeTaskSchedulerService implements InitializingBean, DisposableBea
             public void run() {
                 try {
                     load();
-                } catch (Exception e) {
-                    logger.error("run ",e);
+                } catch (Throwable e) {
+                    logger.error("load error",e);
                 }
             }
         }, timeTaskClient.getTaskCheckInterval(),timeTaskClient.getTaskCheckInterval());

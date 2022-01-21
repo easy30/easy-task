@@ -53,6 +53,9 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
     @Value("${task.pool.threadCount:30}")
     private int poolThreadCount;
 
+    @Value("${task.serverPort:}")
+    private String serverPort;
+
     protected  String localMachine;
     private String serviceUrl;
 
@@ -203,20 +206,23 @@ public class TimeTaskClient implements ApplicationContextAware,InitializingBean,
 
             @Override
             public void run() {
-                long t=System.currentTimeMillis();
-                String[] info=null;
-                while (System.currentTimeMillis()-t<100*1000) {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    info=getHttpInfo();
-                    if(info!=null){
-                        break;
-                    }
+                String[] info = null;
+                if(serverPort.trim().isEmpty()) {
+                    long t = System.currentTimeMillis();
 
-                }
+                    while (System.currentTimeMillis() - t < 100 * 1000) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        info = getHttpInfo();
+                        if (info != null) {
+                            break;
+                        }
+
+                    }
+                }else info=new String[]{"http",serverPort.trim()};
 
                 String contextPath=w.getServletContext().getContextPath();
                 if(!contextPath.endsWith("/"))contextPath+="/";
