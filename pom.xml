@@ -10,7 +10,7 @@
     <url>https://github.com/cehome-com/easy-task</url>
     <description>easy task scheduler</description>
     <properties>
-        <spring-version>3.2.2.RELEASE</spring-version>
+        <spring-version>3.2.18.RELEASE</spring-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
     </properties>
